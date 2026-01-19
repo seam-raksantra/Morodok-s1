@@ -1,0 +1,554 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Inter:wght@300;400;600;700;800&display=swap');
+
+:root {
+  --emerald-dark: #1a2e1a;
+  --emerald-deep: #111d11;
+  --emerald-muted: #4a624a;
+  --text-light: #ffffff;
+  --text-gray: #a3b0a3;
+  --text-dark: #1a2e1a;
+  --white: #ffffff;
+}
+
+.hp-main-wrapper {
+  background-color: var(--emerald-dark);
+  color: var(--text-light);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+.hp-hero {
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  padding: 0 8%;
+  position: relative;
+}
+
+.hp-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(26,46,26,0.4), var(--emerald-dark));
+  pointer-events: none;
+}
+
+.hp-hero-content {
+  margin-top: auto;
+  margin-bottom: 80px;
+  z-index: 2;
+  max-width: 800px;
+}
+
+.hp-tagline {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 20px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.77);
+  border-radius: 50px;
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 1.2px;
+}
+
+.hp-hero-content h1 {
+  font-size: 3rem;
+  line-height: 1.1;
+  font-weight: 800;
+  margin-bottom: 25px;
+}
+
+.hp-hero-content p {
+  font-size: 1.1rem;
+  color: #c2ccc2;
+  max-width: 600px;
+}
+
+.hp-mission {
+  padding: 120px 8%;
+  background-color: #1a2e1a;
+  text-align: center;
+  color: #ffffff;
+}
+
+.hp-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.hp-section-label {
+  font-size: 0.85rem;
+  letter-spacing: 3px;
+  color: #ffffff;
+  font-weight: 600;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 25px;
+  opacity: 0.9;
+}
+
+.hp-mission-title {
+  font-size: 3rem;
+  line-height: 1.1;
+  font-weight: 600;
+  margin-bottom: 50px;
+  letter-spacing: -1px;
+}
+
+.hp-mission-description {
+  max-width: 850px;
+  margin: 0 auto 70px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.hp-mission-description p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #d1d1d1;
+  margin: 0;
+}
+
+.hp-feature-pills {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 40px;
+}
+
+.hp-pill {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 15px 30px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #ffffff;
+  transition: background 0.3s ease;
+}
+
+.hp-pill:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.hp-pill svg {
+  color: #ffffff;
+  stroke-width: 1.5px;
+}
+
+.hp-destinations {
+  background-color: var(--white);
+  color: var(--text-dark);
+  padding: 120px 8%;
+}
+
+.hp-dest-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 60px;
+}
+
+.hp-cursive {
+  font-family: 'Dancing Script', cursive;
+  font-size: 3rem;
+  color: #1D451D;
+  display: block;
+  line-height: 0.8;
+}
+
+.hp-dest-title-group h2 {
+  font-size: 2.5rem;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.hp-dest-text {
+  max-width: 500px;
+  font-size: 0.95rem;
+  color: #5a6b5a;
+  line-height: 1.6;
+}
+
+.hp-bento-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 24px;
+  height: 600px;
+}
+
+.hp-bento-stack {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 24px;
+}
+
+.hp-bento-main, .hp-bento-item {
+  border-radius: 20px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.hp-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 35px;
+  color: #fff;
+  overflow: hidden;
+  transition: transform 0.4s ease;
+  cursor: pointer;
+}
+
+.hp-card-overlay:hover{
+  transform: scale(1.02);
+}
+
+.hp-card-overlay h3 { 
+  font-size: 1.6rem; 
+  margin-bottom: 5px; 
+}
+
+.hp-badge {
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(4px);
+  width: fit-content;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.hp-center-btn { 
+  text-align: center; 
+  margin-top: 60px; 
+}
+
+.hp-btn-explore {
+  background: var(--emerald-dark);
+  color: white;
+  padding: 16px 40px;
+  border-radius: 50px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.hp-testimonial-sec {
+  background: var(--white);
+  padding-bottom: 100px;
+}
+
+.hp-testimonial-card {
+  background-color: #1a2e1a;
+  border-radius: 20px;
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  overflow: hidden;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.hp-testimonial-img {
+  background-size: cover;
+  background-position: center;
+  min-height: 400px;
+}
+
+.hp-testimonial-body {
+  padding: 60px 50px 60px 20px;
+  color: #ffffff;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hp-quote-icon {
+  font-size: 5rem;
+  color: #ffffff;
+  line-height: 1;
+  margin-bottom: 0px;
+  font-family: serif;
+  display: block;
+}
+
+.hp-testimonial-text {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  font-weight: 500;
+  color: #f0f0f0;
+}
+
+.hp-author h4 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.hp-author p {
+  font-size: 0.95rem;
+  color: #a3b0a3;
+  margin-bottom: 30px;
+}
+
+.hp-btn-readmore {
+  background-color: #a3b0a3;
+  color: #1a2e1a;
+  border: none;
+  padding: 12px 40px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  width: fit-content;
+  transition: background-color 0.3s ease;
+}
+
+.hp-btn-readmore:hover {
+  background-color: #cbd5cb;
+}
+
+.hp-cta-section { 
+  padding: 100px 8%; 
+  background: var(--white); 
+}
+
+.hp-cta-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+  margin: 0 auto;
+}
+
+.hp-cta-image { 
+  background-size: cover; 
+  background-position: center;
+  display: flex; 
+  align-items: center; 
+  padding: 50px; 
+  color: white; 
+  min-height: 450px; 
+  position: relative;
+}
+
+.hp-cta-image::after {
+    content: ''; 
+    position: absolute; 
+    inset: 0; 
+    background: rgba(0,0,0,0.25);
+}
+
+.hp-cta-image-text { 
+  margin-top: 15rem;
+  position: relative; 
+  z-index: 2;
+  text-shadow: 4px 4px 8px rgb(255, 250, 250);
+}
+
+.hp-cta-image-text p {
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  margin-bottom: 15px;
+  font-weight: 600;
+  color: #d1e0d1;
+  text-transform: uppercase;
+}
+
+.hp-cta-image-text h2 {
+  color: var(--emerald-deep);
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.hp-cta-content { 
+  padding: 60px; 
+  color: var(--text-dark); 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center; 
+  align-items: center;
+  text-align: center;
+}
+
+.hp-cta-content h2 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.hp-cta-content p {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+  max-width: 420px;
+  margin-bottom: 35px;
+}
+
+.hp-btn-trips { 
+  background: var(--emerald-muted); 
+  color: white; 
+  padding: 15px 45px; 
+  border-radius: 50px; /* Pill shape matched */
+  border: none; 
+  font-weight: 700; 
+  cursor: pointer; 
+  transition: 0.3s;
+}
+
+@media (max-width: 1100px) {
+  .hp-hero-content h1 {
+    font-size: 3.2rem;
+  }
+
+  .hp-mission-title {
+    font-size: 2.8rem;
+  }
+
+  .hp-bento-grid {
+    height: auto;
+    grid-template-columns: 1fr;
+  }
+
+  .hp-bento-stack {
+    grid-template-rows: repeat(2, 300px);
+  }
+
+  .hp-bento-main {
+    height: 400px;
+  }
+
+  .hp-testimonial-card {
+    margin: 0 5%;
+    grid-template-columns: 1fr;
+  }
+
+  .hp-testimonial-img {
+    min-height: 300px;
+  }
+
+  .hp-testimonial-body {
+    padding: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hp-hero {
+    padding: 0 5%;
+    text-align: center;
+  }
+
+  .hp-hero-content {
+    margin: auto auto 60px auto;
+  }
+
+  .hp-hero-content h1 {
+    font-size: 2.5rem;
+  }
+
+  .hp-hero-content p {
+    margin: 0 auto;
+  }
+
+  .hp-mission {
+    padding: 80px 5%;
+  }
+
+  .hp-mission-title {
+    font-size: 2.2rem;
+  }
+
+  .hp-dest-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+  }
+
+  .hp-destinations {
+    padding: 80px 5%;
+  }
+
+  .hp-cta-container {
+    grid-template-columns: 1fr;
+  }
+
+  .hp-cta-image {
+    min-height: 300px;
+    padding: 30px;
+  }
+
+  .hp-cta-image-text {
+    margin-top: 5rem;
+  }
+
+  .hp-cta-content {
+    padding: 40px 20px;
+  }
+
+  .hp-cta-content h2 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hp-tagline {
+    font-size: 0.7rem;
+    padding: 6px 15px;
+  }
+
+  .hp-hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .hp-pill {
+    padding: 12px 20px;
+    font-size: 0.85rem;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hp-cursive {
+    font-size: 2.2rem;
+  }
+
+  .hp-dest-title-group h2 {
+    font-size: 1.8rem;
+  }
+
+  .hp-card-overlay h3 {
+    font-size: 1.3rem;
+  }
+
+  .hp-quote-icon {
+    font-size: 3.5rem;
+  }
+
+  .hp-testimonial-text {
+    font-size: 1.1rem;
+  }
+}

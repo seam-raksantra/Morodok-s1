@@ -1,0 +1,358 @@
+@import url('https://fonts.googleapis.com/css2?family=Alkatra:wght@400..700&family=Playwrite+NO:wght@100..400&display=swap');
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 5%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: transparent;
+  transition: all 0.4s ease;
+}
+
+.header.scrolled {
+  background: #2d4a2d;
+  padding: 15px 8%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.header.scrolled .logo {
+  color: #fff;
+}
+
+.header.scrolled .logo-travel{
+  color: #fff;
+}
+
+.header.scrolled .nav a {
+  color: #fff;
+}
+
+.header.scrolled .bar {
+  background-color: #fff;
+}
+
+.header.scrolled .login-btn {
+  color: #fff;
+  border-color: #ccc;
+}
+
+.header.scrolled .signup-btn{
+  background-color: #fff;
+  border: none;
+  color: #1D451D;
+}
+
+.header.scrolled .account-btn {
+  color: #ffff;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  font-family: "Alkatra", system-ui;
+  font-size: 1.6rem;
+  color: #fff;
+  text-decoration: none;
+  z-index: 1100;
+}
+
+.logo-image {
+  height: 50px;
+  width: auto;
+  margin-right: 10px;
+  transition: height 0.3s ease;
+}
+
+.header.scrolled .logo-image {
+  height: 50px;
+}
+
+.nav-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav a {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 30px;
+  position: relative;
+  transition: color 0.3s ease;
+  opacity: 0.9;
+  font-weight: 600;
+}
+
+.nav a:hover {
+  color: #eee;
+  opacity: 1;
+}
+
+.nav a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #eee;
+  transition: width 0.3s ease;
+}
+
+.nav a:hover::after {
+  width: 100%;
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.auth-buttons button {
+  padding: 10px 28px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.login-btn {
+  background: transparent;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.signup-btn {
+  background-color: #2d4a2d;
+  color: white;
+  border: none;
+}
+
+.auth-buttons .account-btn{
+  color: #fff;
+  transition: opacity 0.3s ease;
+  text-decoration: none;
+  padding-left: 30px;
+  font-weight: 600;
+}
+
+.hamburger {
+  display: none;
+  cursor: pointer;
+  z-index: 1100;
+}
+
+.bar {
+  display: block;
+  width: 25px;
+  height: 3px;
+  margin: 5px 0;
+  background-color: white;
+  transition: 0.3s;
+}
+
+.dropdown-trigger {
+  position: static;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.mega-menu-fullwidth {
+  position: absolute;
+  top: 100%; 
+  left: 0;
+  width: 100vw;
+  background: #ffffff;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  border-top: 1px solid rgba(0,0,0,0.05);
+  padding: 50px 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(15px);
+  transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 1000;
+}
+
+.dropdown-trigger:hover .mega-menu-fullwidth {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.mega-menu-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 8%;
+}
+
+.mega-menu-header {
+  margin-bottom: 30px;
+  border-left: 4px solid #2d4a2d;
+  padding-left: 15px;
+}
+
+.mega-menu-header h3 {
+  font-size: 1.6rem;
+  color: #1a2e1a;
+  margin: 0;
+  font-weight: 700;
+}
+
+.mega-menu-header p {
+  color: #666;
+  font-size: 0.95rem;
+  margin-top: 5px;
+}
+
+.province-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.province-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 18px;
+  background: #f4f7f4;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.province-card:hover {
+  background: #2d4a2d;
+  transform: translateY(-2px);
+}
+
+.province-name {
+  color: #2d4a2d;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: color 0.2s;
+}
+
+.count-tag {
+  background: rgba(45, 74, 45, 0.1);
+  color: #2d4a2d;
+  font-size: 0.7rem;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+
+.province-card:hover .province-name {
+  color: #ffffff;
+}
+
+.province-card:hover .count-tag {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.province-card:hover .province-name, 
+.province-card:hover .count-tag {
+  color: #eee;
+}
+
+.province-card.zero-count {
+  opacity: 0.7;
+  background: #fdfdfd;
+  border: 1px solid #ddd;
+}
+
+.province-card.zero-count .count-tag {
+  background: #eee;
+  color: #999;
+}
+
+@media (max-width: 1024px) {
+  .hamburger {
+    display: block;
+  }
+
+  .hamburger.active .bar:nth-child(2) { 
+    opacity: 0; 
+  }
+  .hamburger.active .bar:nth-child(1) { 
+    transform: translateY(8px) rotate(45deg); 
+  }
+  .hamburger.active .bar:nth-child(3) { 
+    transform: translateY(-8px) rotate(-45deg); 
+  }
+
+  .nav-wrapper {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 80%;
+    height: 100vh;
+    background-color: #1a2e1a;
+    flex-direction: column;
+    justify-content: flex-start; 
+    align-items: flex-start;
+    padding: 100px 40px; 
+    transition: 0.4s ease-in-out;
+    box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+  }
+
+  .nav-wrapper.open {
+    right: 0;
+  }
+
+  .nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 25px;
+    width: 100%;
+  }
+
+  .nav a {
+    font-size: 1.2rem;
+    margin-left: 0;
+    padding: 10px 0;
+  }
+
+  .auth-buttons {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 30px;
+    width: 100%;
+    gap: 20px;
+  }
+
+  .auth-buttons button {
+    width: 100%;
+    text-align: center;
+  }
+
+  .auth-buttons .account-btn {
+    font-size: 1.2rem;
+    padding-left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .mega-menu-fullwidth {
+    display: none; 
+  }
+}

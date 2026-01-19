@@ -1,0 +1,45 @@
+.related-section {
+  margin-top: 80px;
+  padding-top: 40px;
+  border-top: 1px solid #eee;
+}
+
+.related-title {
+  font-size: 2rem;
+  color: #1D451D;
+  margin-bottom: 30px;
+  font-weight: 700;
+}
+
+.related-section .trips-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 35px;
+  align-items: stretch;
+}
+
+.no-related-destinations {
+  padding: 50px;
+  text-align: center;
+  background: #fdfdfd;
+  border-radius: 12px;
+  border: 1px dashed #e0e0e0;
+  color: #888;
+  font-size: 1.1rem;
+  margin-top: 20px;
+}
+
+@media (max-width: 1024px) {
+  .related-section .trips-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .related-section .trips-grid {
+    grid-template-columns: 1fr;
+  }
+  .related-title {
+    font-size: 1.6rem;
+  }
+}

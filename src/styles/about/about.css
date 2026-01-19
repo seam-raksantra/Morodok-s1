@@ -1,0 +1,266 @@
+.about-page-wrapper {
+    background: #fff;
+}
+
+.sus-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5%;
+}
+
+.about-hero {
+    height: 100vh;
+    background: url('../../assets/banner/aboutUs.jpg') center/cover no-repeat;
+    display: flex; align-items: center;
+}
+.about-hero-overlay {
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.4);
+    display: flex; align-items: center; justify-content: center;
+}
+.about-hero-content { 
+    text-align: center; 
+    color: white; 
+    padding: 0 20px; 
+}
+
+.about-hero-content h1 { 
+    font-size: 3.1rem; 
+    font-weight: 700; 
+    margin-bottom: 20px; 
+}
+
+.about-hero-content p { 
+    max-width: 650px; 
+    font-size: 1.1rem; 
+    color: #ddd; 
+    margin: 0 auto; 
+}
+
+.our-story-section { 
+    padding: 100px 0; 
+}
+.story-top-content { 
+    display: flex; 
+    gap: 80px; 
+    align-items: center; 
+    margin-bottom: 60px; 
+}
+
+.story-main-text { 
+    flex: 1; 
+}
+.story-main-text h2 { 
+    color: #1D451D;
+    font-size: 3.1rem; 
+    margin-bottom: 30px;
+    font-weight: 700; 
+}
+.story-main-text p { 
+    color: #444; 
+    line-height: 1.8; 
+    margin-bottom: 25px; 
+    font-size: 1.05rem; 
+}
+.story-main-image-wrapper { 
+    flex: 1; 
+    height: 480px; 
+    border-radius: 15px; 
+    overflow: hidden; 
+}
+.story-main-image-wrapper img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+}
+
+.story-highlight-grid { 
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 25px; 
+}
+.highlight-card { 
+    background: #E8F0E8; 
+    padding: 10px 15px; 
+    border-radius: 20px; 
+    border: 1px solid #dce8dc; 
+}
+.highlight-card h3 { 
+    font-size: 2rem; 
+    font-weight: 800; 
+    color: #1D451D; 
+    margin-bottom: 5px; 
+}
+.highlight-card h4 { 
+    font-size: 1.2rem; 
+    color: #1D451D; 
+    margin-bottom: 15px; 
+    font-weight: 700; 
+}
+.highlight-card p { 
+    font-size: 0.95rem; 
+    color: #555; 
+    line-height: 1.5; 
+    margin: 0; 
+}
+
+.about-impact-dark, .about-partners-dark { 
+    background: #1D451D; 
+    padding: 50px 0; 
+    color: white;
+}
+.sus-header-center { 
+    text-align: center; 
+    margin-bottom: 60px; 
+}
+.white-text h2 { 
+    color: white; 
+    font-size: 2.5rem; 
+    margin-bottom: 15px; 
+}
+.white-text p { 
+    color: #b7c3b7; 
+}
+
+.about-values-grid { 
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 30px; 
+}
+.value-card {
+    background: rgba(255,255,255,0.05); 
+    padding: 10px 15px; 
+    border-radius: 15px; 
+    border: 1px solid rgba(255,255,255,0.1); 
+}
+.value-icon-box { 
+    background: rgba(255,255,255,0.1); 
+    width: 45px; 
+    height: 45px; 
+    border-radius: 10px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    margin-bottom: 20px; 
+    color: #fff; 
+}
+.value-card h3 { 
+    font-size: 1.25rem; 
+    margin-bottom: 10px; 
+}
+.value-card p { 
+    color: #b7c3b7; 
+    font-size: 0.9rem; 
+    line-height: 1.6; 
+}
+
+.about-team-section { 
+    padding: 100px 0; 
+}
+.team-grid { 
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 50px; 
+}
+.team-img-placeholder { 
+    height: 350px; 
+    background: #f0f0f0; 
+    border-radius: 15px; 
+    margin-bottom: 20px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    overflow: hidden; 
+}
+.team-card h3 { 
+    font-size: 1.3rem; 
+    margin-bottom: 5px; 
+    color: #111; 
+}
+.team-role { 
+    color: #1D451D; 
+    font-weight: 700; 
+    font-size: 0.9rem; 
+    margin-bottom: 12px; 
+}
+.team-bio { 
+    font-size: 0.9rem; 
+    color: #666; 
+    line-height: 1.5; 
+}
+
+.partners-grid-about { 
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 25px; 
+    margin-top: 50px; 
+}
+.partner-card { 
+    background: rgba(255,255,255,0.07); 
+    padding: 15px 20px; 
+    border-radius: 20px; 
+    border: 1px solid rgba(255,255,255,0.1); 
+}
+.partner-icon { 
+    color: white; 
+    margin-bottom: 20px; 
+}
+.partner-card h3 { 
+    font-size: 1.2rem; 
+    margin-bottom: 12px; 
+    font-weight: 700; 
+}
+.partner-card p { 
+    font-size: 0.95rem; 
+    color: #b7c3b7; 
+    line-height: 1.6; 
+}
+
+.about-cta { 
+    text-align: center; 
+    margin-top: 70px; 
+    padding-top: 40px; 
+    border-top: 1px solid rgba(255,255,255,0.1); 
+}
+.about-cta p { 
+    font-size: 1rem; 
+    color: #b7c3b7; 
+    margin-bottom: 25px; 
+}
+.white-get-in-touch {
+    background: #fff; 
+    color: #1D451D; 
+    border: none; 
+    padding: 15px 40px; 
+    border-radius: 50px; 
+    font-weight: 700; 
+    font-size: 1rem; 
+    cursor: pointer; 
+    transition: 0.3s; 
+}
+.white-get-in-touch:hover { 
+    background: #e8f0e8; 
+    transform: translateY(-2px); 
+}
+
+@media (max-width: 1024px) {
+    .story-top-content { 
+        flex-direction: column; 
+        text-align: center;
+        gap: 40px; 
+    }
+    .team-grid, .about-values-grid { 
+        grid-template-columns: repeat(2, 1fr); 
+    }
+    .about-hero-content h1 { 
+        font-size: 2.8rem; 
+    }
+}
+@media (max-width: 768px) {
+    .story-highlight-grid, .team-grid, .about-values-grid, .partners-grid-about { 
+        grid-template-columns: 1fr; 
+    }
+    .story-main-text h2 { 
+        font-size: 2.2rem; 
+    }
+}

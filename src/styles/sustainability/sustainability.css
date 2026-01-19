@@ -1,0 +1,384 @@
+.sus-page-wrapper {
+    background: #fff;
+    font-family: 'Inter', sans-serif;
+}
+
+.sus-hero {
+    height: 100vh;
+    background: url('../../assets/banner/forest.jpg') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sus-hero-overlay {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sus-hero-content {
+    text-align: center;
+    color: #fff;
+    padding: 0 20px;
+}
+
+.sus-hero-title {
+    font-size: 3.1rem;
+    font-weight: 700;
+    max-width: 900px;
+    margin-bottom: 20px;
+    line-height: 1.1;
+}
+
+.sus-hero-para {
+    font-size: 1.1rem;
+    color: #e0e0e0;
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+.sus-mission-section, .sus-ongoing {
+    padding: 100px 8%;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.sus-mission-container {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+}
+
+.sus-mission-container.reverse {
+    flex-direction: row-reverse;
+}
+
+.sus-mission-text {
+    flex: 1;
+}
+
+.sus-mission-text h2 {
+    color: #1D451D;
+    font-size: 2.2rem;
+    margin-bottom: 25px;
+    font-weight: 700;
+}
+
+.sus-mission-text p {
+    color: #555;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    font-size: 1.05rem;
+}
+
+.sus-mission-image {
+    flex: 1;
+    height: 450px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+}
+
+.sus-mission-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.sus-initiatives {
+    background: #fcfcfc;
+    padding: 100px 0;
+}
+
+.sus-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5%;
+}
+
+.sus-header-center {
+    text-align: center;
+    margin-bottom: 70px;
+}
+
+.sus-header-center h2 {
+    color: #1D451D;
+    font-size: 2.2rem;
+    font-weight: 700;
+}
+
+.sus-header-center.white-text h2 {
+    color: #fff;
+    font-size: 2.2rem;
+    font-weight: 700;
+}
+
+.initiatives-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.init-card {
+    background: white;
+    border-radius: 15px;
+    overflow: visible;
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    transition: transform 0.3s ease;
+}
+
+.init-card:hover {
+    transform: translateY(-5px);
+}
+
+.init-img-wrapper {
+    height: 200px;
+    position: relative;
+}
+
+.init-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px 15px 0 0;
+}
+
+.init-icon-badge {
+    position: absolute;
+    bottom: -22px;
+    left: 25px;
+    background: #1D451D;
+    color: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid white;
+    z-index: 10;
+}
+
+.init-body {
+    padding: 45px 25px 30px;
+}
+
+.init-body h3 {
+    color: #1D451D;
+    margin-bottom: 12px;
+    font-size: 1.3rem;
+}
+
+.sus-impact-section-wrapper {
+    background: #1D451D;
+    padding: 50px 0;
+    color: white;
+}
+
+.impact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5%;
+}
+
+.impact-item {
+    padding: 10px 5px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 15px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.impact-item h4 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 15px 0 5px;
+}
+
+.impact-item p {
+    color: #b7c3b7;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.sus-ongoing {
+    padding: 120px 8%;
+    background-color: #ffffff;
+}
+
+.ongoing-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #000;
+    line-height: 1.1;
+    margin-bottom: 30px;
+}
+
+.ongoing-description {
+    font-size: 1.1rem;
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 40px;
+}
+
+.commitment-checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin-bottom: 45px;
+}
+
+.checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.check-icon-wrapper {
+    background-color: #e2ede2;
+    color: #1D451D;
+    min-width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.item-content h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 4px;
+}
+
+.item-content p {
+    font-size: 0.95rem;
+    color: #666;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.sus-action-btn-large {
+    background: #1D451D;
+    color: #ffffff;
+    border: none;
+    padding: 18px 40px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.sus-action-btn-large:hover {
+    background: #143314;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.sus-mission-image {
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+.sus-action-btn:hover {
+    background: #2a5a2a;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 1200px) {
+    .sus-mission-container {
+        gap: 50px;
+        padding: 0 5%;
+    }
+}
+
+@media (max-width: 1024px) {
+    .initiatives-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .impact-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .sus-hero-title {
+        font-size: 2.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .sus-hero {
+        height: 100vh;
+    }
+
+    .sus-hero-title {
+        font-size: 2.2rem;
+    }
+
+    .sus-mission-section, 
+    .sus-ongoing, 
+    .sus-initiatives {
+        padding: 60px 5%;
+    }
+
+    .sus-mission-container, 
+    .sus-mission-container.reverse {
+        flex-direction: column;
+        text-align: center;
+        gap: 40px;
+    }
+
+    .sus-mission-image {
+        width: 100%;
+        height: 350px;
+    }
+
+    .initiatives-grid, 
+    .impact-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .checklist-item {
+        text-align: left;
+    }
+
+    .sus-header-center {
+        margin-bottom: 40px;
+    }
+
+    .sus-header-center h2,
+    .ongoing-title,
+    .sus-mission-text h2 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .sus-hero-title {
+        font-size: 1.8rem;
+    }
+
+    .init-card {
+        max-width: 100%;
+    }
+
+    .impact-item h4 {
+        font-size: 1.5rem;
+    }
+
+    .sus-action-btn-large {
+        width: 100%;
+        padding: 15px 25px;
+    }
+}

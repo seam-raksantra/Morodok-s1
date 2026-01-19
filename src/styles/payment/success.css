@@ -1,0 +1,298 @@
+.success-view {
+  background-color: #fff;
+  min-height: 100vh;
+}
+
+.success-container {
+  padding: 150px 20px 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.success-card {
+  background: white;
+  width: 100%;
+  max-width: 600px;
+  border-radius: 20px;
+  border: 1px solid rgba(78, 68, 68, 0.758);
+  padding: 40px;
+  text-align: center;
+}
+
+.icon-wrapper {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.success-header h1 {
+  color: #2d4a2d;
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.conf-number {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 8px 16px;
+  background: #f0f4f0;
+  border-radius: 50px;
+  color: #2d4a2d;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.success-body {
+  margin-top: 40px;
+  text-align: left;
+  border-top: 1px dashed #ddd;
+  padding-top: 30px;
+}
+
+.receipt-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+.receipt-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.receipt-item {
+  display: flex;
+  gap: 12px;
+  color: #666;
+}
+
+.receipt-item label {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.receipt-item p {
+  color: #1a2e1a;
+  font-weight: 600;
+}
+
+.total-box {
+  margin-top: 30px;
+  background: #2d4a2d;
+  padding: 20px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+.final-amount {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.success-footer {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.download-btn {
+  background: transparent;
+  border: 1px solid #ddd;
+  padding: 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.download-btn:hover {
+  background: #f9f9f9;
+}
+
+.dashboard-link {
+  color: #2d4a2d;
+  text-decoration: none;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.email-note {
+  margin-top: 20px;
+  color: #888;
+  font-size: 0.85rem;
+}
+
+.receipt-section {
+  position: relative;
+  background: #ffffff;
+}
+
+.success-body {
+  margin-top: 40px;
+  text-align: left;
+  border-top: 2px dashed #e0e0e0;
+  padding-top: 30px;
+  position: relative;
+}
+
+.success-body::before,
+.success-body::after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  width: 20px;
+  height: 20px;
+  background-color: #fff;
+  border: 1px solid rgba(78, 68, 68, 0.758);
+  border-radius: 50%;
+}
+
+.success-body::before { left: -51px; border-left: none; }
+.success-body::after { right: -51px; border-right: none; }
+
+.receipt-section h3 {
+  color: #2d4a2d;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 25px;
+  font-weight: 800;
+}
+
+.receipt-item {
+  background: #fcfcfc;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #f0f0f0;
+  display: flex;
+  gap: 12px;
+  transition: transform 0.2s ease;
+}
+
+.receipt-item:hover {
+  transform: translateY(-2px);
+  border-color: #2d4a2d44;
+}
+
+.receipt-item label {
+  color: #888;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.receipt-item p {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.total-box {
+  margin-top: 35px;
+  background: #2d4a2d;
+  background: linear-gradient(135deg, #2d4a2d 0%, #1a2e1a 100%);
+  box-shadow: 0 10px 20px rgba(45, 74, 45, 0.2);
+  border: none;
+}
+
+.total-box span:first-child {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+@media (max-width: 992px) {
+  .success-container {
+    padding-top: 150px;
+  }
+  .success-card {
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  .success-container {
+    padding: 120px 15px 40px;
+  }
+  
+  .success-card {
+    padding: 30px 25px;
+    border-radius: 16px;
+  }
+
+  .success-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .receipt-row {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .success-container {
+    padding-top: 100px;
+  }
+
+  .success-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .icon-wrapper svg {
+    width: 50px;
+    height: 50px;
+  }
+
+  .total-box {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+    padding: 15px;
+  }
+
+  .final-amount {
+    font-size: 1.3rem;
+  }
+
+  .success-card {
+    border-left: none;
+    border-right: none;
+    border-radius: 12px;
+  }
+  
+  .download-btn, .dashboard-link {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+}
+
+@media print {
+  .Header, .Footer, .success-footer, .email-note, .payment-back-control {
+    display: none !important;
+  }
+  .success-view {
+    background: white;
+  }
+  .success-container {
+    padding: 0;
+  }
+  .success-card {
+    border: none;
+    max-width: 100%;
+    padding: 0;
+  }
+}

@@ -1,0 +1,252 @@
+.login-viewport {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    overflow: hidden;
+    background: #fff;
+    font-family: 'Inter', sans-serif;
+}
+
+.login-full-container {
+    display: flex;
+    width: 100%;
+}
+
+.login-content-area {
+    flex: 1;
+    padding: 80px 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-brand-header {
+    font-family: "Alkatra", system-ui;
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: #1D451D;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.logo-image {
+    height: 100px;
+    width: auto;
+    margin-right: 10px;
+}
+
+.login-title-box h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.login-title-box p {
+    color: #666;
+    margin-bottom: 40px;
+}
+
+.form-utilities {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 35px;
+    font-size: 0.9rem;
+}
+
+.input-block {
+    margin-bottom: 20px;
+}
+
+.input-block label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    line-height: 1.2;
+}
+
+.input-block input {
+    width: 100%;
+    height: 52px;
+    padding: 14px 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+    transition: 0.1s;
+}
+
+.input-block input:focus {
+    border-color: #1D451D;
+    outline: none;
+}
+
+.pass-field {
+    position: relative;
+}
+
+.pass-field input {
+    padding-right: 48px;
+}
+
+.toggle-view {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    cursor: pointer;
+}
+
+
+.forgot-text {
+    color: #728f72;
+    text-decoration: none;
+}
+
+.login-action-btn {
+    width: 100%;
+    padding: 16px;
+    background: #728f72;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.signup-link {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.signup-link a {
+    color: #1D451D;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.hr-divider {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 25px 0;
+}
+
+.hr-divider .line {
+    flex: 1;
+    height: 1px;
+    background: #eee;
+}
+
+.hr-divider .text {
+    font-size: 0.85rem;
+    color: #999;
+}
+
+.social-row {
+    display: flex;
+    gap: 15px;
+}
+
+.pill-btn img {
+    width: 18px;
+}
+
+.pill-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    background: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 40px;
+}
+
+.login-visual-side {
+    flex: 1;
+}
+
+.login-visual-side img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+@media (max-width: 1024px) {
+    .login-content-area {
+        padding: 60px 5%;
+    }
+}
+
+@media (max-width: 900px) {
+    .login-visual-side {
+        display: none;
+    }
+
+    .login-content-area {
+        flex: 1;
+        padding: 40px 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .login-viewport {
+        height: auto;
+        overflow: visible;
+    }
+
+    .login-full-container {
+        flex-direction: column;
+    }
+
+    .login-title-box h1 {
+        font-size: 1.75rem;
+    }
+
+    .social-row {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .pill-btn {
+        margin-bottom: 10px;
+    }
+
+    .pill-btn:last-child {
+        margin-bottom: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-brand-header {
+        font-size: 1.2rem;
+    }
+
+    .logo-image {
+        height: 60px;
+    }
+
+    .login-title-box h1 {
+        font-size: 1.5rem;
+    }
+
+    .form-utilities {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+
+    .login-action-btn {
+        padding: 14px;
+        font-size: 1rem;
+    }
+}

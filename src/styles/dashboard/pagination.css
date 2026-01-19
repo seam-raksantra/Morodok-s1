@@ -1,0 +1,32 @@
+.pagination-wrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-top: 1px solid #eee;
+}
+
+.pagination-wrapper span{
+    font-size: 13px;
+    color: #64748b;
+}
+
+.pagination-wrapper .pagination-btn{
+    display: flex;
+    gap: 8px;
+}
+
+.pagination-btn button{
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+}
+
+.pagination-btn button.active{
+    background: #f1f5f9;
+    cursor: pointer not-allowed;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+}
