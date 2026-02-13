@@ -17,6 +17,7 @@ import AdminDashboard from './Dashboard/AdminDashboard';
 
 import Payment from './Payment/Payment';
 import BookingSuccess from './Payment/BookingSuccess';
+import Packages from './pages/Packages';
 
 const AdminRoute = ({ children }) => {
   const userData = localStorage.getItem('user');
@@ -47,6 +48,7 @@ function App() {
 
         <Route path="/payment" element={<Payment />} />
         <Route path="/booking-success" element={<BookingSuccess />} />
+        <Route path="/packages" element={<Packages />} />
 
         <Route 
           path="/admin" 

@@ -97,6 +97,7 @@ const Header = () => {
           </div>
           
           <Link to="/trips" onClick={() => setIsMenuOpen(false)}>Plan Trips</Link>
+          <Link to="/packages" onClick={() => setIsMenuOpen(false)}>Packages</Link>
           <Link to="/sustainability" onClick={() => setIsMenuOpen(false)}>Sustainable</Link>
         </nav>
         

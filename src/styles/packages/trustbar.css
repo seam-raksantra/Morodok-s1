@@ -1,0 +1,66 @@
+.trust-bar {
+  width: 100%;
+  background-color: #ffffff;
+  padding: 30px 0;
+  overflow: hidden;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.logo-slider {
+  display: flex;
+  width: 100%;
+}
+
+.logo-track {
+  display: flex;
+  width: calc(250px * 10);
+  animation: scroll 30s linear infinite;
+}
+
+.logo-track:hover {
+  animation-play-state: paused;
+}
+
+.logo-item {
+  width: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.logo-item img {
+  height: 50px;
+  max-width: 150px;
+  /* filter: grayscale(100%); */
+  /* opacity: 0.6;
+  transition: 0.3s; */
+}
+
+.logo-item img:hover {
+  /* filter: grayscale(0%); */
+  opacity: 1;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-250px * 5));
+  }
+}
+
+@media (max-width: 768px) {
+  .logo-track {
+    animation-duration: 20s;
+  }
+  .logo-item {
+    width: 150px;
+  }
+  @keyframes scroll {
+    100% {
+      transform: translateX(calc(-150px * 5));
+    }
+  }
+}

@@ -1,0 +1,118 @@
+.hero-container {
+  position: relative;
+  height: 500px;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: background-image 0.6s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.carousel-arrow:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: #fff;
+}
+
+.arrow-svg {
+  width: 24px;
+  height: 24px;
+  color: white;
+}
+
+.left-arrow { left: 40px; }
+.right-arrow { right: 40px; }
+
+.carousel-dots {
+  position: absolute;
+  bottom: 25px;
+  display: flex;
+  gap: 12px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dot.active {
+  background-color: #ffffff;
+  transform: scale(1.2);
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+/* --- Mobile Responsive Styles --- */
+
+@media (max-width: 768px) {
+  .hero-container {
+    height: 350px; /* Shorter height for mobile */
+  }
+
+  .hero-content h1 {
+    font-size: 1.8rem; /* Smaller text for mobile screens */
+    padding: 0 20px;   /* Prevents text from hitting the arrows */
+  }
+
+  .carousel-arrow {
+    width: 36px;       /* Smaller circles */
+    height: 36px;
+    background: rgba(0, 0, 0, 0.2); /* Slightly darker for better visibility on small screens */
+  }
+
+  .left-arrow { 
+    left: 10px;        /* Pull arrows closer to the edge */
+  }
+  
+  .right-arrow { 
+    right: 10px; 
+  }
+
+  .arrow-svg {
+    width: 18px;       /* Smaller icons */
+    height: 18px;
+  }
+
+  .carousel-dots {
+    bottom: 15px;      /* Move dots up slightly */
+    gap: 8px;
+  }
+
+  .dot {
+    width: 6px;        /* Smaller dots */
+    height: 6px;
+  }
+}
+
+/* Extra small devices (phones in portrait) */
+@media (max-width: 480px) {
+  .hero-container {
+    height: 280px;
+  }
+
+  .hero-content h1 {
+    font-size: 1.4rem;
+  }
+}

@@ -8,6 +8,7 @@ import tripRoutes from "./routes/tripRoutes.js";
 import tripHighlightRoutes from "./routes/tripHighlightRoutes.js";
 import destinationHighlightRoutes from "./routes/destinationHighlightRoutes.js";
 import bookingRoutes from './routes/bookingRoutes.js';
+import packagesRoute from './routes/packagesRoute.js';
 
 dotenv.config();
 
@@ -22,6 +23,8 @@ app.use("/api/trips", tripRoutes);
 app.use("/api/tripshighlights", tripHighlightRoutes);
 app.use("/api/destinationhighlights", destinationHighlightRoutes);
 app.use('/api/bookings', bookingRoutes);
+
+app.use('/api', packagesRoute);
 
 app.listen(5000, () => {
   console.log("Server running on http://localhost:5000");
