@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import '../../styles/packages/hero.css';
 
 import imgDestination from '../../assets/banner/destination-banner.jpg';
-import imgTravelGuide from '../../assets/banner/travelGuide.jpg';
-import imgSunSet from '../../assets/banner/sunSet.jpg';
-import imgForest from '../../assets/banner/forest.jpg';
-import imgAngkorWat from '../../assets/banner/angkorWat.jpg';
-import imgCardamomForest from '../../assets/banner/cardamomForest.jpg';
+import imgTravelGuide from '../../assets/banner/angkor_wat.jpg';
+import imgSunSet from '../../assets/banner/koh_ker.jpg';
+import imgForest from '../../assets/banner/Kulen_national_park.jpg';
+import imgAngkorWat from '../../assets/banner/song_saa_island.jpg';
+import imgCardamomForest from '../../assets/banner/statue.jpg';
 
 const Hero = () => {
   const images = [imgDestination, imgTravelGuide, imgSunSet, imgForest, imgAngkorWat, imgCardamomForest];

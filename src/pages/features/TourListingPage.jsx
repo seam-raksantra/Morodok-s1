@@ -10,6 +10,9 @@ const TourListingPage = () => {
   const [provinces, setProvinces] = useState([]); 
   const [loading, setLoading] = useState(true);
   
+  // --- NEW: Favorite State ---
+  const [favorites, setFavorites] = useState([]); 
+
   // Search and Sort State
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('featured');
@@ -21,7 +24,7 @@ const TourListingPage = () => {
   const [priceRange, setPriceRange] = useState([0, 1000]); 
   const [selectedRatings, setSelectedRatings] = useState([]);
 
-  // --- NEW: Additional Filter States from Screenshot ---
+  // --- Additional Filter States from Screenshot ---
   const [selectedDurations, setSelectedDurations] = useState([]);
   const [selectedAttractions, setSelectedAttractions] = useState([]);
   const [selectedAccessibility, setSelectedAccessibility] = useState([]);
@@ -41,6 +44,19 @@ const TourListingPage = () => {
         const result = await response.json();
         const dataArray = result.data || [];
         setProvinces(dataArray);
+
+        // Fetch existing favorites if user is logged in
+        const token = localStorage.getItem('token');
+        if (token) {
+          const favResponse = await fetch('http://localhost:5000/api/favorites', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (favResponse.ok) {
+            const favData = await favResponse.json();
+            // Assuming favData is an array of objects with tour_id
+            setFavorites(favData.map(fav => fav.tour_id));
+          }
+        }
       } catch (err) {
         console.error("API Error:", err);
       } finally {
@@ -50,72 +66,84 @@ const TourListingPage = () => {
     fetchData();
   }, []);
 
-  // Filter and Sort Logic
+  // --- NEW: Toggle Favorite Function with Direct Routing ---
+  const toggleFavorite = async (tourId) => {
+    const token = localStorage.getItem('token');
+
+    // Permission Check: Route to login if no token is found
+    if (!token) {
+      window.location.href = '/login'; // Redirects directly to login page
+      return;
+    }
+
+    try {
+      const isFav = favorites.includes(tourId);
+      
+      // Update UI state optimistically
+      if (isFav) {
+        setFavorites(favorites.filter(id => id !== tourId));
+      } else {
+        setFavorites([...favorites, tourId]);
+      }
+
+      // API call to save to user account with Authorization
+      await fetch('http://localhost:5000/api/favorites', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ tour_id: tourId, action: isFav ? 'remove' : 'add' })
+      });
+    } catch (err) {
+      console.error("Error saving favorite:", err);
+    }
+  };
+
+  // Filter and Sort Logic (STAYS STILL)
   const filteredItems = useMemo(() => {
     let result = [...provinces];
-
-    // 1. Search Query
     if (searchQuery) {
       result = result.filter((item) =>
         item.title.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
-
-    // 2. Categories
     if (selectedCategory && selectedCategory !== 'All') {
       result = result.filter((item) => item.category === selectedCategory);
     }
-
-    // 3. Languages
     if (selectedLanguages.length > 0) {
       result = result.filter((item) => 
         item.languages?.some(lang => selectedLanguages.includes(lang))
       );
     }
-
-    // 4. Time of Day
     if (selectedTimes.length > 0) {
       result = result.filter((item) => selectedTimes.includes(item.timeOfDay));
     }
-
-    // 5. Price Range
     result = result.filter((item) => 
       item.base_price >= priceRange[0] && item.base_price <= priceRange[1]
     );
-
-    // 6. Traveller Rating
     if (selectedRatings.length > 0) {
       const minRating = Math.min(...selectedRatings);
       result = result.filter((item) => (item.average_rating || 0) >= minRating);
     }
-
-    // 7. Durations (NEW)
     if (selectedDurations.length > 0) {
       result = result.filter((item) => selectedDurations.includes(item.duration_category));
     }
-
-    // 8. Popular Attractions (NEW)
     if (selectedAttractions.length > 0) {
       result = result.filter((item) => 
         item.attractions?.some(attr => selectedAttractions.includes(attr))
       );
     }
-
-    // 9. Accessibility (NEW)
     if (selectedAccessibility.length > 0) {
       result = result.filter((item) => 
         item.accessibility_features?.some(acc => selectedAccessibility.includes(acc))
       );
     }
-
-    // 10. Special Offers (NEW)
     if (selectedOffers.length > 0) {
       result = result.filter((item) => 
         item.special_offers?.some(offer => selectedOffers.includes(offer))
       );
     }
-
-    // Sorting Logic
     if (sortBy === 'priceLow') {
       result.sort((a, b) => a.base_price - b.base_price);
     } else if (sortBy === 'priceHigh') {
@@ -123,7 +151,6 @@ const TourListingPage = () => {
     } else if (sortBy === 'rating') {
       result.sort((a, b) => (b.average_rating || 0) - (a.average_rating || 0));
     }
-
     return result;
   }, [
     provinces, searchQuery, sortBy, selectedCategory, selectedLanguages, 
@@ -131,7 +158,6 @@ const TourListingPage = () => {
     selectedAttractions, selectedAccessibility, selectedOffers
   ]);
 
-  // Reset page when filters change
   useEffect(() => {
     setCurrentPage(1);
   }, [
@@ -172,10 +198,7 @@ const TourListingPage = () => {
         setSortBy={setSortBy} 
       />
 
-      <button 
-        className="mobile-filter-trigger" 
-        onClick={() => setShowMobileFilters(true)}
-      >
+      <button className="mobile-filter-trigger" onClick={() => setShowMobileFilters(true)}>
         <FiFilter /> Show Filters
       </button>
 
@@ -198,7 +221,6 @@ const TourListingPage = () => {
             setPriceRange={setPriceRange}
             selectedRatings={selectedRatings}
             setSelectedRatings={setSelectedRatings}
-            // Passing new props
             selectedDurations={selectedDurations}
             setSelectedDurations={setSelectedDurations}
             selectedAttractions={selectedAttractions}
@@ -213,7 +235,10 @@ const TourListingPage = () => {
 
         <main className="results-column">
           <div className="results-count-meta">
-            {filteredItems.length} results sorted by {sortBy} <FiInfo className="info-icon-small" />
+            {filteredItems.length} results sorted by {sortBy} 
+            <span className="info-wrapper" data-tooltip="We rank tours based on traveler ratings, booking volume, and price.">
+              <FiInfo className="info-icon-small" />
+            </span>
           </div>
 
           <div className="tour-list">
@@ -224,6 +249,8 @@ const TourListingPage = () => {
                 const imagePath = item.thumbnail 
                   ? `/provinces/${item.thumbnail}.jpg` 
                   : `/provinces/default.jpg`;
+                
+                const isFavorite = favorites.includes(item.tour_id);
 
                 return (
                   <div className="tour-card-clean" key={item.tour_id || index}>
@@ -236,7 +263,14 @@ const TourListingPage = () => {
                           e.target.src = '/provinces/default.jpg'; 
                         }}
                       />
-                      <button className="heart-overlay"><FiHeart /></button>
+                      <button 
+                        className={`heart-overlay ${isFavorite ? 'active' : ''}`}
+                        onClick={() => toggleFavorite(item.tour_id)}
+                      >
+                        <FiHeart 
+                          fill={isFavorite ? "#ff4b4b" : "none"}
+                        />
+                      </button>
                     </div>
 
                     <div className="info-wrap">
@@ -257,10 +291,16 @@ const TourListingPage = () => {
                         <div className="badge-line">
                           <IoCheckmarkCircleOutline className="badge-icon" />
                           <span>free cancellation</span>
+                          <span className="info-wrapper" data-tooltip="Cancel at least 24 hours before the start date for a full refund.">
+                            <FiInfo className="info-trigger" />
+                          </span>
                         </div>
                         <div className="badge-line">
                           <IoShieldCheckmarkOutline className="badge-icon" />
                           <span>Recommend 100% by travellers</span>
+                          <span className="info-wrapper" data-tooltip="100% of travelers who took this tour gave it a 4 or 5 star rating.">
+                            <FiInfo className="info-trigger" />
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -309,7 +349,7 @@ const TourListingPage = () => {
                 </p>
 
                 <p className="sell-out-text">
-                  *Likely to sell out: Based on Viator’s booking data and information from the provider from the past 30 days, it seems likely this experience will sell out through Viator, a Morodok Eco company.
+                  *Likely to sell out: Based on Viator’s booking data and information from the provider from the past 30 days...
                 </p>
             </div>
           )}
@@ -320,7 +360,6 @@ const TourListingPage = () => {
 
       {showMobileFilters && <div className="sidebar-overlay" onClick={() => setShowMobileFilters(false)}></div>}
     </div>
-    
   );
 };
 

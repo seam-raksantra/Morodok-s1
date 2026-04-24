@@ -71,7 +71,10 @@ const SidebarFilters = ({
 
       <div className="filter-block">
         <div className="filter-header" onClick={() => toggleSection('languages')}>
-          <h4>Languages <FiInfo className="info-icon-xs" /></h4>
+          <h4>Languages</h4>
+          <span className="info-wrapper" data-tooltip="Filters to see tours in the language(s) of your choice.">
+            <FiInfo className="info-trigger" />
+          </span>
           {openSections.languages ? <FiChevronUp /> : <FiChevronDown />}
         </div>
         {openSections.languages && (

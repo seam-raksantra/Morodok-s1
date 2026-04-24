@@ -3,12 +3,19 @@ import { FiChevronUp, FiChevronDown, FiArrowLeft, FiArrowRight } from 'react-ico
 import '../../styles/packages/activitiesgallery.css';
 
 // Importing assets
-import ecoCamping from '../../../src/assets/adventures/eco_camping.jpg';
-import jungleTrekking from '../../../src/assets/adventures/jungle_trekking.jpg';
-import kayakTour from '../../../src/assets/adventures/kayak_tour.jpg';
-import riverCruise from '../../../src/assets/adventures/river_cruise.jpg';
-import villageCycling from '../../../src/assets/adventures/village_cycling.jpg';
-import wildlifeSafari from '../../../src/assets/adventures/wildlife_safari.jpg';
+import jungle from '../../../src/assets/adventures/off_road.jpg';
+import jungle_1 from '../../../src/assets/adventures/off_road_1.jpg';
+import riverCruise from '../../../src/assets/adventures/boat_tour.jpg';
+import riverCruise_1 from '../../../src/assets/adventures/boat_tour_1.jpg';
+import riverCruise_2 from '../../../src/assets/adventures/boat_tour_2.jpg';
+import villageCycling from '../../../src/assets/adventures/cycling.jpg';
+import villageCycling_1 from '../../../src/assets/adventures/cycling_1.jpg';
+import villageCycling_2 from '../../../src/assets/adventures/cycling_2.jpg';
+import wildlifeSafari from '../../../src/assets/adventures/nature.jpg';
+import wildlifeSafari_1 from '../../../src/assets/adventures/nature_1.jpg';
+import wildlifeSafari_2 from '../../../src/assets/adventures/wildlife.jpg';
+import wildlifeSafari_3 from '../../../src/assets/adventures/wildlife_1.jpg';
+import wildlifeSafari_4 from '../../../src/assets/adventures/wildlife_2.jpg';
 
 const ActivitiesGallery = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -24,11 +31,18 @@ const ActivitiesGallery = () => {
 
   const items = [
     { src: villageCycling, title: 'Village Cycling', category: 'Bike Tours' },
-    { src: jungleTrekking, title: 'Jungle Trekking', category: 'Nature & Wildlife Tours' },
-    { src: ecoCamping, title: 'Eco Camping', category: 'Nature & Wildlife Tours' },
+    { src: villageCycling_1, title: 'Village Cycling 1', category: 'Bike Tours' },
+    { src: villageCycling_2, title: 'Village Cycling 2', category: 'Bike Tours' },
+    { src: jungle, title: 'Jungle Trekking', category: '4WD, ATV, & Off Road' },
+    { src: jungle_1, title: 'Jungle Trekking 1', category: '4WD, ATV, & Off Road' },
     { src: wildlifeSafari, title: 'Wildlife Safari', category: 'Nature & Wildlife Tours' },
+    { src: wildlifeSafari_1, title: 'Wildlife Safari 1', category: 'Nature & Wildlife Tours' },
+    { src: wildlifeSafari_2, title: 'Wildlife Safari 2', category: 'Nature & Wildlife Tours' },
+    { src: wildlifeSafari_3, title: 'Wildlife Safari 3', category: 'Nature & Wildlife Tours' },
+    { src: wildlifeSafari_4, title: 'Wildlife Safari 4', category: 'Nature & Wildlife Tours' },
     { src: riverCruise, title: 'River Cruise', category: 'Boat Tours' },
-    { src: kayakTour, title: 'Kayak Tour', category: 'Boat Tours' },
+    { src: riverCruise_1, title: 'River Cruise 1', category: 'Boat Tours' },
+    { src: riverCruise_2, title: 'River Cruise 2', category: 'Boat Tours' },
   ];
 
   /**
