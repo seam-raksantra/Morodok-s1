@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FiHeart, FiInfo, FiFilter, FiX } from 'react-icons/fi';
 import { IoCheckmarkCircleOutline, IoShieldCheckmarkOutline } from "react-icons/io5";
 import SidebarFilters from './SidebarFilters';
@@ -6,25 +7,35 @@ import TourSearchHeader from './TourSearchHeader';
 import TravellerFeedback from './TravellerFeedback';
 import '../../styles/packages/tourlisting.css';
 
+// Import banner assets
+import adsBanner from '../../assets/logo/ads_1.jpg';
+import tourBanner from '../../assets/logo/ads_2.jpg';
+import travelBanner from '../../assets/logo/tour_banner.jpg';
+import posterBanner from '../../assets/logo/travel_banner.jpg';
+
+const bannerImages = [adsBanner, tourBanner, travelBanner, posterBanner];
+
 const TourListingPage = () => {
   const [provinces, setProvinces] = useState([]); 
   const [loading, setLoading] = useState(true);
+  const navigation = useNavigate();
   
-  // --- NEW: Favorite State ---
-  const [favorites, setFavorites] = useState([]); 
+  // Local storage state strategies
+  const [favorites, setFavorites] = useState({});
+  const [user, setUser] = useState(null);
 
   // Search and Sort State
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('featured');
 
-  // --- Filter States for Sidebar ---
+  // Filter States for Sidebar
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedLanguages, setSelectedLanguages] = useState([]);
   const [selectedTimes, setSelectedTimes] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 1000]); 
   const [selectedRatings, setSelectedRatings] = useState([]);
 
-  // --- Additional Filter States from Screenshot ---
+  // Additional Filter States
   const [selectedDurations, setSelectedDurations] = useState([]);
   const [selectedAttractions, setSelectedAttractions] = useState([]);
   const [selectedAccessibility, setSelectedAccessibility] = useState([]);
@@ -37,26 +48,27 @@ const TourListingPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
 
+  // --- 10-SECOND AD ROTATOR INDEX STATE ---
+  const [currentAdIndex, setCurrentAdIndex] = useState(0);
+
   useEffect(() => {
+    window.scrollTo(0, 0);
+    
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      const parsedUser = JSON.parse(userData);
+      setUser(parsedUser);
+      const favKey = `fav_packages_${parsedUser.email}`;
+      const savedFavs = localStorage.getItem(favKey);
+      if (savedFavs) setFavorites(JSON.parse(savedFavs));
+    }
+
     const fetchData = async () => {
       try {
         const response = await fetch('http://localhost:5000/api');
         const result = await response.json();
         const dataArray = result.data || [];
         setProvinces(dataArray);
-
-        // Fetch existing favorites if user is logged in
-        const token = localStorage.getItem('token');
-        if (token) {
-          const favResponse = await fetch('http://localhost:5000/api/favorites', {
-            headers: { 'Authorization': `Bearer ${token}` }
-          });
-          if (favResponse.ok) {
-            const favData = await favResponse.json();
-            // Assuming favData is an array of objects with tour_id
-            setFavorites(favData.map(fav => fav.tour_id));
-          }
-        }
       } catch (err) {
         console.error("API Error:", err);
       } finally {
@@ -66,41 +78,57 @@ const TourListingPage = () => {
     fetchData();
   }, []);
 
-  // --- NEW: Toggle Favorite Function with Direct Routing ---
-  const toggleFavorite = async (tourId) => {
-    const token = localStorage.getItem('token');
+  // --- 10-SECOND AD INTERVAL EFFECT ---
+  useEffect(() => {
+    const adInterval = setInterval(() => {
+      setCurrentAdIndex((prevIndex) => (prevIndex + 1) % bannerImages.length);
+    }, 5000); // 10000ms = 10 seconds
 
-    // Permission Check: Route to login if no token is found
-    if (!token) {
-      window.location.href = '/login'; // Redirects directly to login page
+    return () => clearInterval(adInterval);
+  }, []);
+
+  const toggleFavorite = (tourId) => {
+    if (!user) {
+      alert("Please login to save your favorite packages!");
       return;
     }
+    
+    const targetTour = provinces.find(p => p.tour_id === tourId);
+    const tourTitle = targetTour ? targetTour.title : "Unknown Package";
+    let isNowFavorite = false;
 
-    try {
-      const isFav = favorites.includes(tourId);
-      
-      // Update UI state optimistically
-      if (isFav) {
-        setFavorites(favorites.filter(id => id !== tourId));
-      } else {
-        setFavorites([...favorites, tourId]);
-      }
+    setFavorites(prev => {
+      isNowFavorite = !prev[tourId];
+      const newFavs = { ...prev, [tourId]: isNowFavorite };
+      localStorage.setItem(`fav_packages_${user.email}`, JSON.stringify(newFavs));
+      return newFavs;
+    });
 
-      // API call to save to user account with Authorization
-      await fetch('http://localhost:5000/api/favorites', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ tour_id: tourId, action: isFav ? 'remove' : 'add' })
-      });
-    } catch (err) {
-      console.error("Error saving favorite:", err);
-    }
+    const historyKey = `account_history_${user.email}`;
+    const savedHistory = localStorage.getItem(historyKey);
+    let historyArray = savedHistory ? JSON.parse(savedHistory) : [];
+
+    const newHistoryEntry = {
+      id: `history_${Date.now()}`,
+      type: 'Package',
+      item_id: tourId,
+      title: tourTitle,
+      action: isNowFavorite ? 'Added to Favorites' : 'Removed from Favorites',
+      date: new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      }),
+      image_url: targetTour?.thumbnail || 'default'
+    };
+
+    historyArray.unshift(newHistoryEntry);
+    localStorage.setItem(historyKey, JSON.stringify(historyArray));
   };
 
-  // Filter and Sort Logic (STAYS STILL)
+  // Filter and Sort Logic
   const filteredItems = useMemo(() => {
     let result = [...provinces];
     if (searchQuery) {
@@ -189,6 +217,13 @@ const TourListingPage = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' }); 
   };
 
+  const premiumFeedbackTours = useMemo(() => {
+    return filteredItems.slice(0, 3);
+  }, [filteredItems]);
+
+  // Determine insertion midpoint row for listing views
+  const adInsertionIndex = Math.max(2, Math.floor(currentItems.length / 2));
+
   return (
     <div className="main-listing-wrapper">
       <TourSearchHeader 
@@ -245,14 +280,15 @@ const TourListingPage = () => {
             {loading ? (
               <div className="loading">Updating tours...</div>
             ) : filteredItems.length > 0 ? (
-              currentItems.map((item, index) => {
+              currentItems.flatMap((item, index) => {
                 const imagePath = item.thumbnail 
                   ? `/provinces/${item.thumbnail}.jpg` 
                   : `/provinces/default.jpg`;
                 
-                const isFavorite = favorites.includes(item.tour_id);
+                const isFavorite = !!favorites[item.tour_id];
+                const avgRating = item.average_rating ? Number(item.average_rating) : 5.0;
 
-                return (
+                const cardJsx = (
                   <div className="tour-card-clean" key={item.tour_id || index}>
                     <div className="image-wrap">
                       <img 
@@ -267,23 +303,24 @@ const TourListingPage = () => {
                         className={`heart-overlay ${isFavorite ? 'active' : ''}`}
                         onClick={() => toggleFavorite(item.tour_id)}
                       >
-                        <FiHeart 
-                          fill={isFavorite ? "#ff4b4b" : "none"}
-                        />
+                        <FiHeart fill={isFavorite ? "#ff4b4b" : "none"} />
                       </button>
                     </div>
 
                     <div className="info-wrap">
                       <h3 className="tour-title">{indexOfFirstItem + index + 1}. {item.title}</h3>
+                      
+                      {/* --- FUNCTIONAL DYNAMIC RATING & REVIEW COUNTS --- */}
                       <div className="rating-row-clean">
-                        <span className="rating-text">{item.average_rating || '5.0'}</span>
+                        <span className="rating-text">{avgRating.toFixed(1)}</span>
                         <div className="green-circles">
                           {[...Array(5)].map((_, i) => (
-                            <span key={i} className={`circle ${i < Math.floor(item.average_rating || 5) ? 'filled' : ''}`}></span>
+                            <span key={i} className={`circle ${i < Math.floor(avgRating) ? 'filled' : ''}`}></span>
                           ))}
                         </div>
-                        <span className="reviews-text">(20)</span>
+                        <span className="reviews-text">({item.review_count || 0})</span>
                       </div>
+
                       <p className="duration-label">{item.duration_category}</p>
                       <p className="description-snippet">{item.description}</p>
                       
@@ -310,11 +347,41 @@ const TourListingPage = () => {
                         <span className="label-from">from</span>
                         <span className="actual-price">${Math.round(item.base_price)}</span>
                         <span className="label-per">per adult</span>
-                        <button className="reserve-green-btn">Reserve</button>
+                        <button 
+                          className="reserve-green-btn" 
+                          onClick={() => navigation(`/packagedetails/${item.tour_id}`)}
+                        >
+                          Reserve
+                        </button>
                       </div>
                     </div>
                   </div>
                 );
+
+                // --- INJECT ROTATING BANNER AT THE SPECIFIED MIDPOINT ELEMENT ---
+                if (index === adInsertionIndex) {
+                  const adBannerJsx = (
+                    <div className="ads-banner-container mid-list-ad" key="mid-list-advertisement">
+                      <div className="ads-banner-wrapper">
+                        {bannerImages.map((src, i) => (
+                          <img
+                            key={i}
+                            src={src}
+                            alt={`Promotion Display ${i + 1}`}
+                            className={`ads-banner-image ${i === currentAdIndex ? 'active' : ''}`}
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=40';
+                            }}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  );
+                  return [adBannerJsx, cardJsx];
+                }
+
+                return [cardJsx];
               })
             ) : (
               <div className="no-results-container">
@@ -351,12 +418,14 @@ const TourListingPage = () => {
                 <p className="sell-out-text">
                   *Likely to sell out: Based on Viator’s booking data and information from the provider from the past 30 days...
                 </p>
+
+                <div className="embedded-feedback-section" style={{ marginTop: '1rem' }}>
+                  <TravellerFeedback tours={premiumFeedbackTours} />
+                </div>
             </div>
           )}
         </main>
       </div>
-
-      <TravellerFeedback tours={filteredItems} />
 
       {showMobileFilters && <div className="sidebar-overlay" onClick={() => setShowMobileFilters(false)}></div>}
     </div>

@@ -1,22 +1,26 @@
 import db from '../config/db.js';
 
 export const createBooking = async (booking) => {
+  // FIXED: Ensure we have exactly 11 placeholders matching our 11 parameters
   const sql = `
     INSERT INTO booking 
-    (user_id, trip_id, full_name, email, contact_phone, started_date, num_people, total_price, booked_at, status, special_requests) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?)
+    (user_id, trip_id, tour_id, full_name, email, contact_phone, started_date, num_people, total_price, booked_at, status, special_requests) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
+  
   const values = [
-    booking.user_id || null,
-    booking.trip_id || null,
-    booking.full_name || null,
-    booking.email || null,
-    booking.contact_phone || null,
-    booking.started_date || null,
-    booking.num_people || 0,
-    booking.total_price || 0,
-    booking.status || 'Pending', // Default to 'Pending'
-    booking.special_requests || null
+    booking.user_id || null,          // 1
+    booking.trip_id || null,          // 2
+    booking.tour_id || null,          // 3
+    booking.full_name || null,        // 4
+    booking.email || null,            // 5
+    booking.contact_phone || null,    // 6
+    booking.started_date || null,      // 7
+    booking.num_people || 0,          // 8
+    booking.total_price || 0,         // 9
+    booking.booked_at || new Date(),  // 10: FIXED: Mapped explicit date generation to booked_at
+    booking.status || 'Pending',      // 11: Mapped status cleanly to the 11th index
+    booking.special_requests || null  // 12: Mapped special_requests cleanly to the 12th index
   ];
 
   const [result] = await db.execute(sql, values);
@@ -29,7 +33,7 @@ export const updateBookingStatus = async (id, status) => {
   return result;
 };
 
-/* --- Existing Helper Methods (Keep these as they are) --- */
+/* --- Existing Helper Methods (Kept exactly as they were) --- */
 export const getBookingById = async (id) => {
   const [rows] = await db.execute('SELECT * FROM booking WHERE id = ?', [id]);
   return rows[0];

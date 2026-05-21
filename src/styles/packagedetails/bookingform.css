@@ -1,0 +1,410 @@
+/* ==========================================================================
+   Container & Layout 
+   ========================================================================== */
+.booking-section {
+    max-width: 1300px;
+    margin: 40px auto;
+    padding: 0 20px 40px 20px;
+}
+
+.booking-main-title {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 30px;
+    color: #000;
+    letter-spacing: -0.5px;
+}
+
+.booking-container {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+/* Form Card Styling */
+.booking-form-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 24px;
+    padding: 40px;
+    background: #ffffff;
+}
+
+.booking-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.full-width { grid-column: span 2; }
+
+/* Input Elements */
+.input-group { display: flex; flex-direction: column; gap: 8px; }
+
+.input-group label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.input-group input, 
+.input-group select, 
+.input-group textarea {
+    padding: 14px 18px;
+    border: 1px solid #cbd5e1;
+    border-radius: 14px;
+    font-size: 15px;
+    background-color: #fff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    outline: none;
+    color: #334155;
+}
+
+.input-group input::placeholder { color: #94a3b8; }
+
+.input-group input:focus, 
+.input-group textarea:focus {
+    border-color: #6d846e;
+    box-shadow: 0 0 0 3px rgba(109, 132, 110, 0.1);
+}
+
+.input-group textarea { 
+    height: 150px; 
+    resize: none; 
+    line-height: 1.6; 
+}
+
+.char-count { 
+    font-size: 13px; 
+    color: #64748b; 
+    margin-top: 6px; 
+}
+
+/* ==========================================================================
+   NEW MODERN CUSTOM DROPDOWN SELECTORS (TRAVELERS & CALENDAR)
+   ========================================================================== */
+
+/* Interactive Traveler Select Box Container Grid Hook */
+.modern-custom-select-wrapper {
+    position: relative;
+}
+
+.modern-custom-select-trigger {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #cbd5e1;
+    border-radius: 14px;
+    padding: 14px 18px;
+    cursor: pointer;
+    font-size: 15px;
+    color: #334155;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.modern-custom-select-trigger:hover {
+    border-color: #6d846e;
+}
+
+.modern-custom-select-trigger.active {
+    border-color: #6d846e;
+    box-shadow: 0 0 0 3px rgba(109, 132, 110, 0.1);
+}
+
+.trigger-left-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.trigger-icon {
+    color: #64748b;
+    font-size: 18px;
+}
+
+.trigger-chevron {
+    color: #94a3b8;
+    font-size: 16px;
+    transition: transform 0.2s ease;
+}
+
+.modern-custom-select-trigger.active .trigger-chevron {
+    transform: rotate(180deg);
+}
+
+/* Floating Travelers Panel Adjustments */
+.modern-custom-dropdown-panel {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+    z-index: 200;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.panel-label-title {
+    font-weight: 700;
+    font-size: 14px;
+    display: block;
+    color: #1a1a1a;
+}
+
+.panel-label-subtitle {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.panel-counter-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.counter-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid #cbd5e1;
+    background: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #334155;
+    font-size: 16px;
+    transition: all 0.2s;
+}
+
+.counter-btn:hover:not(:disabled) {
+    border-color: #6d846e;
+    color: #6d846e;
+    background-color: rgba(109, 132, 110, 0.04);
+}
+
+.counter-btn:disabled {
+    background: #f1f5f9;
+    cursor: not-allowed;
+    color: #cbd5e1;
+    border-color: #e2e8f0;
+}
+
+.counter-value-display {
+    font-size: 16px;
+    font-weight: 700;
+    min-width: 24px;
+    text-align: center;
+    color: #1a1a1a;
+}
+
+/* Modern Date Input UI Structuring */
+.modern-datepicker-container {
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+}
+
+.modern-datepicker-container input[type="date"] {
+    width: 100%;
+    padding: 14px 18px 14px 46px; /* Leaves clear spacing room for custom calendar left icon placement */
+    box-sizing: border-box;
+}
+
+.modern-datepicker-container .calendar-left-overlay-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+    font-size: 18px;
+    pointer-events: none;
+}
+
+/* Standardizes Native Calendar Dropdown Overlap Hooks to expand on field body clicks */
+.modern-datepicker-container input[type="date"]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: auto;
+    color: transparent;
+    background: transparent;
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   Important Information Section (Sage Box)
+   ========================================================================== */
+.important-info-box {
+    background-color: #e3e9e3;
+    border-radius: 18px;
+    padding: 24px;
+    margin: 10px 0;
+    grid-column: span 2;
+}
+
+.important-info-box h4 { 
+    font-size: 15px; 
+    font-weight: 800; 
+    margin-bottom: 16px; 
+    color: #1a1a1a;
+}
+
+.important-info-box ul { 
+    list-style: none; 
+    padding: 0; 
+    margin: 0; 
+}
+
+.important-info-box li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    margin-bottom: 12px;
+    color: #2d3748;
+    font-weight: 500;
+}
+
+.icon-green { 
+    color: #55a359; 
+    font-size: 22px; 
+    flex-shrink: 0;
+}
+
+/* Main Reserve Button */
+.reserve-btn {
+    width: 100%;
+    padding: 18px;
+    background-color: #6d846e;
+    color: #ffffff;
+    border: none;
+    border-radius: 16px;
+    font-weight: 700;
+    font-size: 18px;
+    cursor: pointer;
+    transition: transform 0.1s ease, background-color 0.2s ease;
+    grid-column: span 2;
+    margin-top: 10px;
+}
+
+.reserve-btn:hover {
+    background-color: #5a6e5b;
+}
+
+.reserve-btn:active {
+    transform: scale(0.98);
+}
+
+/* Sidebar Styling */
+.summary-sidebar h3 { 
+    font-size: 20px; 
+    font-weight: 800; 
+    margin-bottom: 24px; 
+}
+
+.summary-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 24px;
+    overflow: hidden;
+    background: #fff;
+    position: sticky;
+    top: 30px;
+}
+
+.summary-img { 
+    width: 100%; 
+    height: 220px; 
+    object-fit: cover; 
+}
+
+.summary-details { padding: 28px; }
+
+.summary-details h4 {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 15px;
+    color: #000;
+}
+
+.summary-meta {
+    display: flex;
+    gap: 20px;
+    font-size: 14px;
+    color: #475569;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.summary-meta span { display: flex; align-items: center; gap: 8px; }
+
+.difficulty-badge {
+    display: inline-block;
+    background-color: #cbd5c2;
+    color: #3b4d3c;
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 15px;
+    margin-bottom: 14px;
+    color: #1a1a1a;
+    font-weight: 500;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 22px;
+    font-weight: 800;
+    border-top: 1px dashed #cbd5e1;
+    padding-top: 20px;
+    margin-top: 20px;
+    color: #000;
+}
+
+.booking-notice {
+    background-color: #e3e9e3;
+    padding: 16px;
+    border-radius: 14px;
+    display: flex;
+    gap: 12px;
+    margin-top: 30px;
+    align-items: flex-start;
+}
+
+.booking-notice p { 
+    font-size: 12px; 
+    color: #2d4a2d; 
+    margin: 0; 
+    line-height: 1.6; 
+    font-weight: 500;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1024px) {
+    .booking-container { grid-template-columns: 1fr; gap: 40px; }
+    .summary-card { position: static; }
+}
+
+@media (max-width: 640px) {
+    .booking-grid { grid-template-columns: 1fr; }
+    .full-width { grid-column: span 1; }
+    .booking-form-card { padding: 25px; }
+    .booking-main-title { font-size: 24px; }
+}

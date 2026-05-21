@@ -1,0 +1,135 @@
+.destination-outer {
+    padding-top: 0; 
+    padding-bottom: 40px;
+    width: 100%;
+    margin-top: -40px; 
+}
+
+.destination-content {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.dest-header {
+    margin-bottom: 15px; 
+}
+
+.dest-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.dest-header p {
+    font-size: 14px;
+    color: #717171;
+}
+
+.dest-slider-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+    margin-top: -10px;
+}
+
+.dest-scroll-container {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 10px;
+    scrollbar-width: none;
+}
+
+.dest-scroll-container::-webkit-scrollbar {
+    display: none;
+}
+
+.dest-cards {
+    min-width: 220px;
+    flex: 0 0 auto;
+}
+
+.dest-img-holder {
+    width: 100%;
+    height: 160px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+
+.dest-img-holder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.dest-card:hover img {
+    transform: scale(1.05);
+}
+
+.dest-name {
+    font-size: 16px;
+    font-weight: 700; /* Bold title */
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.dest-next-btn {
+    position: absolute;
+    right: -25px;
+    background: #fff;
+    border: 1.5px solid #000;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 5;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+}
+
+.dest-next-btn:hover {
+    background-color: #f5f5f5;
+    transform: scale(1.1);
+}
+
+.dest-next-btn svg {
+    font-size: 20px;
+    color: #000;
+}
+
+.dest-map-box {
+    width: 100%;
+    height: 350px;
+    background-color: #e5e5e5;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.dest-map-box iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+@media (max-width: 768px) {
+    .dest-next-btn {
+        display: none;
+    }
+    
+    .dest-scroll-container {
+        gap: 12px;
+    }
+    
+    .dest-card {
+        min-width: 180px;
+    }
+}

@@ -13,11 +13,11 @@ const MyAccount = () => {
   const [imagePreview, setImagePreview] = useState(null);
   
   // States for Favourites
-  const [myFavs, setMyFavs] = useState([]);
-  const [allDestinations, setAllDestinations] = useState([]);
+  const [myFavs, setMyFavs] = useState([]); 
+  const [myFavPackages, setMyFavPackages] = useState([]); 
   const [loadingFavs, setLoadingFavs] = useState(false);
 
-  // --- Added: States for Bookings ---
+  // States for Bookings
   const [bookings, setBookings] = useState([]);
   const [loadingBookings, setLoadingBookings] = useState(false);
 
@@ -64,15 +64,28 @@ const MyAccount = () => {
       if (activeTab === 'favourites' && user) {
         setLoadingFavs(true);
         try {
-          const res = await fetch('http://localhost:5000/api/destinations');
-          const data = await res.json();
-          setAllDestinations(data);
+          // FETCH DESTINATIONS
+          const destRes = await fetch('http://localhost:5000/api/destinations');
+          const destData = await destRes.json();
 
-          const favKey = `fav_destinations_${user.email}`;
-          const savedFavs = JSON.parse(localStorage.getItem(favKey) || '{}');
-          const favIds = Object.keys(savedFavs).filter(id => savedFavs[id]);
-          const filtered = data.filter(d => favIds.includes(d.id.toString()));
-          setMyFavs(filtered);
+          const destFavKey = `fav_destinations_${user.email}`;
+          const savedDestFavs = JSON.parse(localStorage.getItem(destFavKey) || '{}');
+          const destFavIds = Object.keys(savedDestFavs).filter(id => savedDestFavs[id]);
+          const filteredDestinations = destData.filter(d => destFavIds.includes(d.id.toString()));
+          setMyFavs(filteredDestinations);
+
+          // FETCH TOUR PACKAGES
+          const packRes = await fetch('http://localhost:5000/api');
+          const packResult = await packRes.json();
+          const packData = packResult.data || []; 
+
+          const packFavKey = `fav_packages_${user.email}`;
+          const savedPackFavs = JSON.parse(localStorage.getItem(packFavKey) || '{}');
+          const packFavIds = Object.keys(savedPackFavs).filter(id => savedPackFavs[id]);
+          
+          const filteredPackages = packData.filter(p => packFavIds.includes(p.tour_id?.toString()));
+          setMyFavPackages(filteredPackages);
+
         } catch (err) {
           console.error("Error loading favourites:", err);
         } finally {
@@ -83,7 +96,7 @@ const MyAccount = () => {
     loadFavourites();
   }, [activeTab, user]);
 
-  // --- 3. Added: Load Booking History ---
+  // 3. Load Booking History
   useEffect(() => {
     const loadBookings = async () => {
       if (activeTab === 'bookings' && user) {
@@ -95,7 +108,6 @@ const MyAccount = () => {
           });
           if (res.ok) {
             const data = await res.json();
-            // Filter bookings specifically for the logged-in user email
             const myBookings = data.filter(b => b.email === user.email);
             setBookings(myBookings);
           }
@@ -138,6 +150,27 @@ const MyAccount = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
     navigate('/login');
+  };
+
+  // --- REUSABLE INLINE STYLES FOR HORIZONTAL ROW DESIGN ---
+  const horizontalRowStyle = {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '20px',
+    overflowX: 'auto',
+    paddingBottom: '15px',
+    paddingTop: '5px',
+    scrollbarWidth: 'thin', 
+    WebkitOverflowScrolling: 'touch' 
+  };
+
+  const miniCardStyle = {
+    flex: '0 0 260px', 
+    border: '1px solid #eee',
+    borderRadius: '15px',
+    overflow: 'hidden',
+    background: '#fff',
+    boxShadow: '0 2px 5px rgba(0,0,0,0.02)'
   };
 
   if (!user) return null;
@@ -265,7 +298,7 @@ const MyAccount = () => {
                   <div className="empty-state">
                     <ShoppingCart size={48} className="empty-icon" />
                     <p>You haven't booked any trips yet.</p>
-                    <button className="browse-btn" onClick={() => navigate('/trips')}>Explore Trips</button>
+                    <button className="browse-btn" onClick={() => navigate('/packages')}>Explore Trips</button>
                   </div>
                 )}
               </div>
@@ -276,22 +309,67 @@ const MyAccount = () => {
                 <h2 className="section-title">My Favourites</h2>
                 {loadingFavs ? (
                   <p>Loading your saved places...</p>
-                ) : myFavs.length > 0 ? (
-                  <div className="favs-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '20px', marginTop: '20px' }}>
-                    {myFavs.map(item => (
-                      <div key={item.id} className="fav-mini-card" style={{ border: '1px solid #eee', borderRadius: '15px', overflow: 'hidden', background: '#fff' }}>
-                        <div style={{ height: '140px', backgroundImage: `url(/src/assets/destinations/${item.image_url}.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
-                        <div style={{ padding: '15px' }}>
-                          <h4 style={{ margin: '0 0 5px 0' }}>{item.name}</h4>
-                          <div style={{ display: 'flex', alignItems: 'center', fontSize: '12px', color: '#666', marginBottom: '10px' }}>
-                            <MapPin size={12} style={{ marginRight: '4px' }} /> {item.location}
-                          </div>
-                          <button onClick={() => navigate('/destinations')} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '8px', borderRadius: '8px', border: '1px solid #007bff', background: 'transparent', color: '#007bff', cursor: 'pointer' }}>
-                            View Details <ArrowUpRight size={14} />
-                          </button>
+                ) : (myFavs.length > 0 || myFavPackages.length > 0) ? (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '25px', marginTop: '20px', maxWidth: '100%', overflow: 'hidden' }}>
+                    
+                    {/* --- DESTINATIONS HORIZONTAL WISHLIST SECTION --- */}
+                    {myFavs.length > 0 && (
+                      <div>
+                        <h3 style={{ margin: '0 0 12px 0', fontSize: '18px', color: '#333', fontWeight: '600' }}>Saved Destinations</h3>
+                        <div className="horizontal-favs-row" style={horizontalRowStyle}>
+                          {myFavs.map(item => (
+                            <div key={item.id} className="fav-mini-card" style={miniCardStyle}>
+                              <div style={{ height: '140px', backgroundImage: `url(/src/assets/destinations/${item.image_url}.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
+                              <div style={{ padding: '15px' }}>
+                                <h4 style={{ margin: '0 0 5px 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.name}</h4>
+                                <div style={{ display: 'flex', alignItems: 'center', fontSize: '12px', color: '#666', marginBottom: '12px' }}>
+                                  <MapPin size={12} style={{ marginRight: '4px', flexShrink: 0 }} /> 
+                                  <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.location}</span>
+                                </div>
+                                <button onClick={() => navigate('/destinations')} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '8px', borderRadius: '8px', border: '1px solid #007bff', background: 'transparent', color: '#007bff', cursor: 'pointer', fontWeight: '500' }}>
+                                  View Details <ArrowUpRight size={14} />
+                                </button>
+                              </div>
+                            </div>
+                          ))}
                         </div>
                       </div>
-                    ))}
+                    )}
+
+                    {/* --- HORIZONTAL LINE DIVIDER --- */}
+                    {myFavs.length > 0 && myFavPackages.length > 0 && (
+                      <hr style={{ border: '0', borderTop: '1px solid #e0e0e0', margin: '15px 0' }} />
+                    )}
+
+                    {/* --- TOUR PACKAGES HORIZONTAL WISHLIST SECTION --- */}
+                    {myFavPackages.length > 0 && (
+                      <div>
+                        <h3 style={{ margin: '0 0 12px 0', fontSize: '18px', color: '#333', fontWeight: '600' }}>Saved Tour Packages</h3>
+                        <div className="horizontal-favs-row" style={horizontalRowStyle}>
+                          {myFavPackages.map(pkg => (
+                            <div key={pkg.tour_id} className="fav-mini-card" style={miniCardStyle}>
+                              <div style={{ 
+                                height: '140px', 
+                                backgroundImage: `url(${pkg.thumbnail ? `/provinces/${pkg.thumbnail}.jpg` : '/provinces/default.jpg'})`, 
+                                backgroundSize: 'cover', 
+                                backgroundPosition: 'center' 
+                              }} />
+                              <div style={{ padding: '15px' }}>
+                                <h4 style={{ margin: '0 0 5px 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{pkg.title}</h4>
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '13px', color: '#333', marginBottom: '12px', fontWeight: '600' }}>
+                                  <span style={{ color: '#666', fontSize: '12px', fontWeight: 'normal' }}>{pkg.duration_category || 'Flexible'}</span>
+                                  <span style={{ color: '#28a745' }}>${Math.round(pkg.base_price)}</span>
+                                </div>
+                                <button onClick={() => navigate(`/packagedetails/${pkg.tour_id}`)} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '8px', borderRadius: '8px', border: '1px solid #28a745', background: 'transparent', color: '#28a745', cursor: 'pointer', fontWeight: '500' }}>
+                                  View Package <ArrowUpRight size={14} />
+                                </button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
                   </div>
                 ) : (
                   <div className="empty-state">

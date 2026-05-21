@@ -1,0 +1,167 @@
+.op-outer-section {
+    padding: 30px 0;
+    background-color: #fff;
+    width: 100%;
+}
+
+.op-main-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.op-title {
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.op-intro-text {
+    font-size: 14px;
+    color: #595959;
+    margin-bottom: 25px;
+}
+
+/* Slider Controls */
+.op-slider-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.op-scroll-box {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 10px 0;
+    scrollbar-width: none;
+}
+
+.op-scroll-box::-webkit-scrollbar {
+    display: none;
+}
+
+/* Card Styling */
+.op-review-card {
+    min-width: 310px;
+    border: 1px solid #e0e0e0;
+    border-radius: 15px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+}
+
+.op-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.op-avatar-circle img {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #f0f0f0;
+}
+
+.op-user-details h4 {
+    font-size: 13px;
+    font-weight: 700;
+    margin: 0;
+    color: #333;
+}
+
+.op-user-details span {
+    font-size: 11px;
+    color: #888;
+}
+
+/* Star Rating */
+.op-rating-row {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 8px;
+}
+
+.star-green { color: #00aa6c; font-size: 16px; }
+.star-grey { color: #e0e0e0; font-size: 16px; }
+
+.op-review-subject {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #000;
+}
+
+.op-review-body {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #4a4a4a;
+    margin-bottom: 12px;
+}
+
+.op-read-more {
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.op-review-date {
+    font-size: 11px;
+    color: #999;
+    margin-top: auto;
+}
+
+/* Floating Button */
+.op-nav-btn {
+    position: absolute;
+    right: -20px;
+    width: 42px;
+    height: 42px;
+    background: #fff;
+    border: 2px solid #000;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 10;
+    transition: transform 0.2s;
+}
+
+.op-nav-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Footer Section */
+.op-see-all {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 700;
+    color: #000;
+    text-decoration: underline;
+    margin: 20px 0;
+}
+
+.op-divider-line {
+    border: none;
+    border-top: 1px solid #eeeeee;
+    margin-bottom: 20px;
+}
+
+.op-legal-text {
+    font-size: 12px;
+    color: #767676;
+    line-height: 1.6;
+}
+
+.op-legal-text a {
+    color: #767676;
+    text-decoration: underline;
+}

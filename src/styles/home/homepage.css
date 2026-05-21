@@ -11,7 +11,7 @@
 }
 
 .hp-main-wrapper {
-  background-color: var(--emerald-dark);
+  /* background-color: var(--emerald-dark); */
   color: var(--text-light);
   font-family: 'Inter', sans-serif;
   overflow-x: hidden;

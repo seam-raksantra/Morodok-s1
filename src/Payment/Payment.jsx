@@ -21,7 +21,8 @@ const Payment = () => {
   });
 
   useEffect(() => {
-    if (!bookingId) navigate('/trips');
+    // FIXED: If state context clears on manual refresh, redirect safely to home base
+    if (!bookingId) navigate('/');
     window.scrollTo(0, 0);
   }, [bookingId, navigate]);
 
@@ -37,6 +38,11 @@ const Payment = () => {
 
     try {
       const token = localStorage.getItem('token'); 
+
+      // IMPROVEMENT: If using Bakong QR, simulate a 2-second network validation lag 
+      if (paymentMethod === 'bakong') {
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+      }
 
       const response = await fetch('http://localhost:5000/api/bookings/confirm-payment', {
         method: 'POST',
@@ -84,7 +90,7 @@ const Payment = () => {
           <div className="processing-content">
             <Loader2 className="spinner-icon" size={48} />
             <h3>Processing Secure Payment</h3>
-            <p>Verifying your transaction and updating your booking...</p>
+            <p>Verifying your transaction and updating your booking status...</p>
           </div>
         </div>
       )}
@@ -197,13 +203,13 @@ const Payment = () => {
                   <div className="method-content bakong-section fade-in">
                     <div className="qr-placeholder">
                         <div className="mock-qr">
-                          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=BakongPay" alt="Bakong QR" />
+                          <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=BakongPay-Booking-${bookingId}`} alt="Bakong QR" />
                         </div>
                         <p>Scan to pay with any Cambodian Bank app</p>
                     </div>
                     <ul className="bakong-features">
-                      <li>• Instant KHQR payment</li>
-                      <li>• Secure via National Bank of Cambodia</li>
+                      <li>• Instant KHQR payment synchronization</li>
+                      <li>• Secure transactions via National Bank of Cambodia</li>
                     </ul>
                   </div>
                 )}

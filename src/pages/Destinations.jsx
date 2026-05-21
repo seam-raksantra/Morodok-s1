@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
-import { Search, MapPin, Clock, Gauge, ArrowUpRight, Loader2, Landmark, Tent, Palmtree, Mountain, Heart, Map } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Search, MapPin, Clock, Gauge, ArrowUpRight, Loader2, Landmark, Tent, Palmtree, Mountain, Heart, Map, Sparkles, Filter } from 'lucide-react';
 import Header from '../components/Navbar';
 import Footer from '../components/Footer';
-import DestinationsDetails from './DestinationsDetails';
 import '../styles/destination/destinations.css';
 
 const Destinations = () => {
@@ -12,21 +11,21 @@ const Destinations = () => {
   const [error, setError] = useState(null);
   const [activeFilter, setActiveFilter] = useState('All Destinations');
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedDest, setSelectedDest] = useState(null);
   
   const [favorites, setFavorites] = useState({});
   const [user, setUser] = useState(null);
 
   const location = useLocation();
+  const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const urlProvince = queryParams.get('province');
 
   const filters = [
-    { name: 'All Destinations', icon: <Landmark size={14} /> },
-    { name: 'Ancient Temples', icon: <Landmark size={14} /> },
-    { name: 'Natural Wonder', icon: <Palmtree size={14} /> },
-    { name: 'Local Community', icon: <Tent size={14} /> },
-    { name: 'Mountain', icon: <Mountain size={14} /> }
+    { name: 'All Destinations', icon: <Landmark size={15} /> },
+    { name: 'Ancient Temples', icon: <Landmark size={15} /> },
+    { name: 'Natural Wonder', icon: <Palmtree size={15} /> },
+    { name: 'Local Community', icon: <Tent size={15} /> },
+    { name: 'Mountain', icon: <Mountain size={15} /> }
   ];
 
   useEffect(() => {
@@ -62,7 +61,7 @@ const Destinations = () => {
       return;
     }
     setFavorites(prev => {
-      const newFavs = { ...prev, [id]: !prev[id] };
+      const newFavs = { ...prev, [id] : !prev[id] };
       localStorage.setItem(`fav_destinations_${user.email}`, JSON.stringify(newFavs));
       return newFavs;
     });
@@ -72,133 +71,169 @@ const Destinations = () => {
     return destinations.filter(dest => {
       const matchesSearch = dest.name.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesFilter = activeFilter === 'All Destinations' || dest.destination_type === activeFilter;
-      
-      const matchesProvince = !urlProvince || 
-        dest.location.toLowerCase().includes(urlProvince.toLowerCase());
+      const matchesProvince = !urlProvince || dest.location.toLowerCase().includes(urlProvince.toLowerCase());
 
       return matchesSearch && matchesFilter && matchesProvince;
     });
   }, [destinations, searchQuery, activeFilter, urlProvince]);
 
   return (
-    <div className="dest-page-wrapper">
+    <div className="modern-explore-viewport">
       <Header />
 
-      <section className="dest-hero">
-        <div className="dest-hero-overlay">
-          <div className="dest-hero-content">
-            <span className="dest-hero-sub">
-               {urlProvince ? `Exploring ${urlProvince}` : "Discover Cambodia's Best Kept Secrets"}
-            </span>
-            <h1 className="dest-hero-title">
-              {urlProvince ? urlProvince : "Hidden Destinations"}
-            </h1>
-            <p className="dest-hero-para">
-              {urlProvince 
-                ? `Showing unique hidden gems specifically located in ${urlProvince} province.`
-                : "Explore pristine landscapes, ancient temples, and authentic communities, far from the tourist trails."}
-            </p>
+      {/* DYNAMIC METRIC HERO SECTION */}
+      <section className="modern-hero-hub">
+        <div className="hero-radial-glow"></div>
+        <div className="hero-central-payload">
+          <div className="hero-badge-pill">
+            <Sparkles size={13} className="sparkle-accent" />
+            <span>{urlProvince ? `Province Profile Log` : `Ecosystem Curations`}</span>
+          </div>
+          
+          <h1 className="hero-title-headline">
+            {urlProvince ? (
+              <>Uncover <span className="gradient-text">{urlProvince}</span></>
+            ) : (
+              <>Cambodia’s <span className="gradient-text">Hidden Gems</span></>
+            )}
+          </h1>
+          
+          <p className="hero-paragraph-lead">
+            {urlProvince 
+              ? `Isolating cataloged low-impact trail logs, community habitats, and architectural relics discovered across ${urlProvince}.`
+              : "Access an interactive registry of localized, community-managed ecosystems and structural remnants bypassing commercial corridors."}
+          </p>
 
-            <div className="dest-search-wrapper">
-              <div className="dest-search-bar">
-                <div className="search-input-group">
-                  <Search size={22} className="search-icon" />
-                  <input
-                    type="text"
-                    placeholder="Search destinations..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                </div>
-                <button className="search-submit-btn">Search</button>
-              </div>
+          {/* FLOAT FLOATING SEARCH BAR ASSEMBLY */}
+          <div className="modern-search-capsule-wrapper">
+            <div className="search-composite-dock">
+              <Search size={20} className="dock-search-icon" />
+              <input
+                type="text"
+                placeholder="Query name, community cluster, or coordinates..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <button className="dock-action-submit-btn">Filter Registry</button>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="dest-filter-bar">
-        <div className="filter-container">
-          <span className="filter-label">Filter by Category:</span>
-          <div className="filter-pills">
+      {/* FLOATING STICKY FILTER SYSTEM STRIP */}
+      <nav className="modern-filter-dock-bar">
+        <div className="dock-bar-inner">
+          <div className="dock-meta-indicator">
+            <Filter size={14} />
+            <span>Active Registry ({filteredData.length})</span>
+          </div>
+          <div className="dock-pills-scroll-rail">
             {filters.map(f => (
               <button
                 key={f.name}
-                className={activeFilter === f.name ? 'active' : ''}
+                className={`dock-pill-btn ${activeFilter === f.name ? 'is-active' : ''}`}
                 onClick={() => setActiveFilter(f.name)}
               >
-                {f.icon} {f.name}
+                {f.icon}
+                <span>{f.name}</span>
               </button>
             ))}
           </div>
         </div>
-      </section>
+      </nav>
 
-      <section className="dest-grid-container">
+      {/* MAIN LAYOUT DISPLAY REGISTRY */}
+      <section className="modern-grid-display-canvas">
         {loading ? (
-          <div className="dest-status"><Loader2 className="spinner" /></div>
+          <div className="canvas-loading-state">
+            <Loader2 className="global-canvas-spinner" size={32} />
+            <p>Decoding localized destination records...</p>
+          </div>
         ) : error ? (
-          <div className="dest-status error">{error}</div>
+          <div className="canvas-status-fallback error-box">{error}</div>
         ) : filteredData.length > 0 ? (
-          <div className="dest-grid">
+          <div className="modern-asymmetrical-bento-grid">
             {filteredData.map((item) => (
-              <div className="dest-card" key={item.id} onClick={() => setSelectedDest(item)}>
-                <div 
-                  className="dest-card-image" 
-                  style={{ backgroundImage: `url(/src/assets/destinations/${item.image_url}.jpg)` }}
-                >
-                  <div 
-                    className="fav-icon-wrapper" 
+              <article 
+                className="modern-bento-card" 
+                key={item.id} 
+                onClick={() => navigate(`/destinations/${item.id}`)}
+              >
+                {/* Image asset component frame */}
+                <div className="bento-image-viewport">
+                  <img 
+                    src={`/src/assets/destinations/${item.image_url}.jpg`} 
+                    alt={item.name}
+                    loading="lazy"
+                    onError={(e) => {
+                      e.target.src = "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80";
+                    }}
+                  />
+                  <div className="bento-card-shading-gradient"></div>
+                  
+                  {/* Top floating badges inside thumbnail */}
+                  <span className="bento-type-badge">{item.destination_type || 'Eco Trail'}</span>
+                  
+                  <button 
+                    className={`bento-fav-action-circle ${favorites[item.id] ? 'is-favorited' : ''}`}
                     onClick={(e) => {
                       e.stopPropagation();
                       toggleFavorite(item.id);
                     }}
+                    aria-label="Toggle Save Tracking"
                   >
                     <Heart 
-                      size={18} 
+                      size={16} 
                       fill={favorites[item.id] ? "#ff4d4d" : "none"} 
-                      color={favorites[item.id] ? "#ff4d4d" : "#333"} 
+                      color={favorites[item.id] ? "#ff4d4d" : "#ffffff"} 
                     />
+                  </button>
+
+                  {/* Built-in glass-pill statistics footer overlay */}
+                  <div className="bento-glass-stats-overlay">
+                    <div className="glass-stat-item">
+                      <Clock size={13} />
+                      <span>{item.duration} {item.duration === 1 ? 'Day' : 'Days'}</span>
+                    </div>
+                    <div className="glass-stat-divider"></div>
+                    <div className="glass-stat-item">
+                      <Gauge size={13} />
+                      <span>{item.difficulty_type || 'Moderate'}</span>
+                    </div>
                   </div>
                 </div>
 
-                <div className="dest-card-body">
-                  <h3>{item.name}</h3>
-                  <div className="dest-card-location">
-                    <MapPin size={14} /> {item.location}
-                  </div>
-                  <p className="dest-card-description">{item.description}</p>
-                  <div className="dest-card-footer">
-                    <div className="dest-card-stats">
-                      <span><Clock size={14} /> {item.duration} {item.duration === 1 ? 'Day' : 'Days'}</span>
-                      <span><Gauge size={14} /> {item.difficulty_type}</span>
+                {/* Card Content Text Payload Box */}
+                <div className="bento-text-payload">
+                  <header className="bento-card-header">
+                    <h3>{item.name}</h3>
+                    <div className="bento-card-location-row">
+                      <MapPin size={13} className="loc-pin" /> 
+                      <span>{item.location}</span>
                     </div>
-                    <div className="dest-card-btn">
-                      <ArrowUpRight size={18} />
-                    </div>
+                  </header>
+                  <p className="bento-card-prose-excerpt">{item.description}</p>
+                  <div className="bento-card-action-trigger">
+                    <span>Inspect Topography</span>
+                    <ArrowUpRight size={15} className="trigger-arrow" />
                   </div>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
         ) : (
-          <div className="no-dest-found">
-            <div className="no-dest-icon">
-              <Map size={48} strokeWidth={1.5} />
+          <div className="modern-empty-state-card">
+            <div className="empty-state-icon-avatar">
+              <Map size={36} strokeWidth={1.25} />
             </div>
-            <h2>No destinations for "{urlProvince || activeFilter}" yet.</h2>
-            <p>We're still exploring! Please check back soon or try another province.</p>
-            <button className="reset-filter-btn" onClick={() => navigate('/destinations')}>
-              View All Destinations
+            <h3>No Active Logs Registered</h3>
+            <p>No eco-destinations matching "{urlProvince || activeFilter}" are current indexed in this localized sector map view.</p>
+            <button className="empty-state-reset-cta" onClick={() => navigate('/destinations')}>
+              Re-initialize Global View
             </button>
           </div>
         )}
       </section>
-
-      <DestinationsDetails 
-        destination={selectedDest} 
-        onClose={() => setSelectedDest(null)} 
-      />
 
       <Footer />
     </div>

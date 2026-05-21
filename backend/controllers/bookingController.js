@@ -2,7 +2,7 @@ import * as Booking from '../models/bookingModel.js';
 
 export const createBooking = async (req, res) => {
   try {
-    const { trip_id, full_name, email, contact_phone, started_date, num_people, total_price, special_requests } = req.body;
+    const { user_id, trip_id, tour_id, full_name, email, contact_phone, started_date, num_people, total_price, status, special_requests } = req.body;
 
     if (!trip_id || !full_name || !email || !started_date || !num_people || !total_price) {
       return res.status(400).json({ message: 'Missing required fields.' });
@@ -12,7 +12,8 @@ export const createBooking = async (req, res) => {
 
     const booking = {
       user_id: req.user.id, 
-      trip_id,
+      trip_id: trip_id || null,  // Defaults to null if it's a tour package
+      tour_id: tour_id || null, // Optional field for tour-specific bookings
       full_name,
       email,
       contact_phone,

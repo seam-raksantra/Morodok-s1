@@ -85,23 +85,25 @@ const AdminDashboard = () => {
         const headers = { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
 
         const [statsRes, bookingRes, destRes, tripRes, userRes] = await Promise.all([
-          fetch('http://localhost:5000/api/users/admin-stats', { headers }),
-          fetch('http://localhost:5000/api/bookings', { headers }), 
-          fetch('http://localhost:5000/api/destinations', { headers }),
-          fetch('http://localhost:5000/api/trips', { headers }),
-          fetch('http://localhost:5000/api/users/all-users', { headers }) 
+          fetch('http://localhost:5000/api/users/admin-stats', { headers }).catch(e => ({ error: true, json: () => ({}) })),
+          fetch('http://localhost:5000/api/bookings', { headers }).catch(e => ({ error: true, json: () => [] })), 
+          fetch('http://localhost:5000/api/destinations', { headers }).catch(e => ({ error: true, json: () => [] })),
+          fetch('http://localhost:5000/api/trips', { headers }).catch(e => ({ error: true, json: () => [] })),
+          fetch('http://localhost:5000/api/users/all-users', { headers }).catch(e => ({ error: true, json: () => [] })) 
         ]);
 
-        const sData = await statsRes.json();
-        const bData = await bookingRes.json();
-        const dData = await destRes.json();
-        const tData = await tripRes.json();
-        const uData = await userRes.json();
+        const sData = statsRes.ok ? await statsRes.json() : {};
+        const bData = bookingRes.ok ? await bookingRes.json() : [];
+        const dData = destRes.ok ? await destRes.json() : [];
+        const tData = tripRes.ok ? await tripRes.json() : [];
+        const uData = userRes.ok ? await userRes.json() : [];
 
         const processBookingTimeline = (allBookings, filter) => {
+          if (!Array.isArray(allBookings)) return [];
           const counts = {};
           allBookings.forEach(b => {
             const date = new Date(b.booked_at || b.created_at);
+            if (isNaN(date.getTime())) return; // skip if invalid date
             let label;
             if (filter === 'Day') label = date.toLocaleTimeString([], { hour: '2-digit' });
             else if (filter === 'Month') label = date.toLocaleString('default', { month: 'short' });
@@ -112,26 +114,30 @@ const AdminDashboard = () => {
         };
 
         setChartData({ 
-          views: sData.revenueData ? sData.revenueData.map(item => ({
+          views: sData?.revenueData ? sData.revenueData.map(item => ({
             name: item.name,
             uniqueViews: item.views || 0
           })) : [], 
-          bookingsTimeline: processBookingTimeline(Array.isArray(bData) ? bData : [], bookingFilter)
+          bookingsTimeline: processBookingTimeline(bData, bookingFilter)
         });
 
         setStats({
-            users: sData.totals.users,
-            destinations: sData.totals.destinations,
-            profit: sData.totals.profit,
-            bookings: sData.totals.bookings || 0,
-            totalViews: sData.totals.totalViews || 0 
-        });
+          users: sData?.totals?.users || 0,
+          destinations: sData?.totals?.destinations || 0,
+          profit: sData?.totals?.profit || 0,
+          bookings: sData?.totals?.bookings || 0,
+          totalViews: sData?.totals?.totalViews || 0 
+      });
 
         setBookings(Array.isArray(bData) ? bData : []); 
         setDestinations(Array.isArray(dData) ? dData : []);
         setTrips(Array.isArray(tData) ? tData : []);
         setUsers(Array.isArray(uData) ? uData : []);
-      } catch (err) { console.error("Dashboard Load Error:", err); } finally { setLoading(false); }
+      } catch (err) { 
+        console.error("Dashboard Load Error:", err); 
+      } finally { 
+        setLoading(false); 
+      }
     };
     fetchAllAdminData();
   }, [activeTab, bookingFilter]);

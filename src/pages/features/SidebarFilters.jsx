@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FiChevronUp, FiChevronDown, FiInfo } from 'react-icons/fi';
 
 import logoWildlife from '../../assets/logo/wildlife_alliance.jpg';
 import logoEcoFinance from '../../assets/logo/eco_and_finance.png';
 import logoMinistryofEnvironment from '../../assets/logo/ministry_of_envi.png';
 
+// --- YOUR LOCAL ADS POSTER IMPORTS ---
+import Ads from '../../assets/logo/ads-poster.png';
+import Ads1 from '../../assets/logo/ads-poster1.png';
+
 const SidebarFilters = ({ 
   selectedCategory, setSelectedCategory, 
   selectedLanguages, setSelectedLanguages,
   priceRange, setPriceRange,
   selectedRatings, setSelectedRatings,
-  // New Props (ensure these are passed from the parent component)
   selectedTimes = [], setSelectedTimes,
   selectedDurations = [], setSelectedDurations,
   selectedAttractions = [], setSelectedAttractions,
@@ -30,6 +33,20 @@ const SidebarFilters = ({
     accessibility: true,
     offers: true
   });
+
+  // --- AUTOMATIC ADS POSTER SWITCHER ---
+  // Array linking your local asset imports
+  const adsList = [Ads, Ads1];
+  
+  const [currentAdIndex, setCurrentAdIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentAdIndex((prevIndex) => (prevIndex + 1) % adsList.length);
+    }, 10000); // Changes every 10 seconds
+
+    return () => clearInterval(timer); // Cleanup on unmount
+  }, [adsList.length]);
 
   const toggleSection = (section) => {
     setOpenSections(prev => ({ ...prev, [section]: !prev[section] }));
@@ -267,6 +284,8 @@ const SidebarFilters = ({
              <img src={logoWildlife} alt="Partner 1" />
              <img src={logoEcoFinance} alt="Partner 2" />
              <img src={logoMinistryofEnvironment} alt="Partner 3" />
+             {/* Switches local poster imports directly based on timer index */}
+             <img src={adsList[currentAdIndex]} alt="Advertisement" />
           </div>
       </div>
     </div>
