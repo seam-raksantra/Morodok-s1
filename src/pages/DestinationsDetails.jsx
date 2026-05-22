@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { 
   MapPin, Clock, Gauge, Calendar, CheckCircle, 
   ArrowLeft, Share2, Heart, Star, Compass, Info,
-  ShieldCheck, Leaf, Users, ArrowRight
+  ShieldCheck, Leaf, Users, ArrowRight, Copy, Check
 } from 'lucide-react';
 import '../styles/destination/destDetails.css';
 
@@ -14,6 +14,19 @@ const DestinationsDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isFavorited, setIsFavorited] = useState(false);
+
+  // New state parameters for functional interactions
+  const [userRating, setUserRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [copiedLink, setCopiedLink] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+
+  // Helper function to trigger elegant temporary UI notifications
+  const triggerToast = (msg) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(""), 3000);
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -35,10 +48,19 @@ const DestinationsDetails = () => {
         const userData = localStorage.getItem('user');
         if (userData) {
           const parsedUser = JSON.parse(userData);
+          
+          // 1. Resolve Favorites State Configuration Logic
           const savedFavs = localStorage.getItem(`fav_destinations_${parsedUser.email}`);
           if (savedFavs) {
             const favsObj = JSON.parse(savedFavs);
             setIsFavorited(!!favsObj[id]);
+          }
+
+          // 2. Resolve User's Existing Saved Rating if applicable
+          const savedRatings = localStorage.getItem(`ratings_${parsedUser.email}`);
+          if (savedRatings) {
+            const ratingsObj = JSON.parse(savedRatings);
+            if (ratingsObj[id]) setUserRating(ratingsObj[id]);
           }
         }
       } catch (err) {
@@ -54,6 +76,7 @@ const DestinationsDetails = () => {
     }
   }, [id]);
 
+  // FULLY FUNCTIONAL FAVORITES TOGGLE INTERFACE
   const handleToggleFavorite = () => {
     const userData = localStorage.getItem('user');
     if (!userData) {
@@ -68,6 +91,58 @@ const DestinationsDetails = () => {
     const updatedFavs = { ...savedFavs, [id]: !isFavorited };
     localStorage.setItem(favKey, JSON.stringify(updatedFavs));
     setIsFavorited(!isFavorited);
+
+    triggerToast(!isFavorited ? "Added to your personal ecosystem track!" : "Removed from your custom saved log.");
+  };
+
+  // FULLY FUNCTIONAL RATING HANDLING SUBSYSTEM
+  const handleRateDestination = (score) => {
+    const userData = localStorage.getItem('user');
+    if (!userData) {
+      alert("Please login to submit your structural rating log!");
+      return;
+    }
+
+    const parsedUser = JSON.parse(userData);
+    const ratingKey = `ratings_${parsedUser.email}`;
+    const savedRatings = localStorage.getItem(ratingKey) ? JSON.parse(localStorage.getItem(ratingKey)) : {};
+
+    const updatedRatings = { ...savedRatings, [id]: score };
+    localStorage.setItem(ratingKey, JSON.stringify(updatedRatings));
+    setUserRating(score);
+
+    triggerToast(`Successfully recorded your ${score}-star rating metrics!`);
+  };
+
+  // UNIVERSAL NATIVE SHARE AND COMPASS FALLBACK ENGINE
+  const handleShareSystem = async () => {
+    const shareData = {
+      title: destination?.name || "Cambodia Hidden Gems",
+      text: destination?.description ? `${destination.description.slice(0, 100)}...` : "Explore sustainable hidden gems ecosystem logs.",
+      url: window.location.href
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+        triggerToast("Destination footprint shared successfully!");
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          console.error("Native share failure:", err);
+          setShowShareModal(true);
+        }
+      }
+    } else {
+      // Open clean fallback interface frame context if Web Share API is missing
+      setShowShareModal(true);
+    }
+  };
+
+  const handleCopyShareLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setCopiedLink(true);
+    triggerToast("Link captured to clipboard layout tracker!");
+    setTimeout(() => setCopiedLink(false), 2000);
   };
 
   const getTimelineData = () => {
@@ -122,6 +197,31 @@ const DestinationsDetails = () => {
   return (
     <div className="modern-dest-page-wrapper">
       
+      {/* GLOBAL HUD TOAST NOTIFICATION CONTAINER */}
+      {toastMessage && (
+        <div className="floating-action-toast">
+          <span>{toastMessage}</span>
+        </div>
+      )}
+
+      {/* COMPACT MODAL FALLBACK DISPLAY SLAT */}
+      {showShareModal && (
+        <div className="share-modal-blur-overlay" onClick={() => setShowShareModal(false)}>
+          <div className="share-modal-payload-box" onClick={(e) => e.stopPropagation()}>
+            <h3>Share Blueprint</h3>
+            <p>Distribute coordinates path log for <strong>{destination.name}</strong>:</p>
+            <div className="share-input-composite-row">
+              <input type="text" readOnly value={window.location.href} />
+              <button className="share-copy-trigger-btn" onClick={handleCopyShareLink}>
+                {copiedLink ? <Check size={16} color="#1a7f37" /> : <Copy size={16} />}
+                <span>{copiedLink ? "Copied" : "Copy"}</span>
+              </button>
+            </div>
+            <button className="share-close-panel-btn" onClick={() => setShowShareModal(false)}>Close Window</button>
+          </div>
+        </div>
+      )}
+      
       {/* 1. TOP UTILITY ACTION BAR */}
       <div className="dest-action-nav">
         <button className="nav-circle-btn" onClick={() => navigate(-1)} aria-label="Go Back">
@@ -129,7 +229,7 @@ const DestinationsDetails = () => {
           <span>Back to Destinations</span>
         </button>
         <div className="nav-action-group">
-          <button className="nav-circle-btn" aria-label="Share">
+          <button className="nav-circle-btn" onClick={handleShareSystem} aria-label="Share Package Profile">
             <Share2 size={18} />
           </button>
           <button 
@@ -226,6 +326,41 @@ const DestinationsDetails = () => {
 
           <hr className="section-divider" />
 
+          {/* DYNAMIC INTERACTIVE RATINGS DASHBOARD SUBSECTION */}
+          <section className="details-section-block">
+            <h2 className="section-subtitle-modern">Ecosystem Community Audit</h2>
+            <div className="interactive-rating-payload-hub">
+              <div className="rating-metrics-summary">
+                <h4>Log Personal Experience Rating</h4>
+                <p>Have you trodden along these conservation paths? Submit your verification metric score:</p>
+              </div>
+              <div className="rating-star-interactive-rail">
+                {[1, 2, 3, 4, 5].map((starValue) => {
+                  const isStarred = starValue <= (hoverRating || userRating);
+                  return (
+                    <button
+                      key={starValue}
+                      className={`star-node-action-btn ${isStarred ? "is-filled" : ""}`}
+                      onClick={() => handleRateDestination(starValue)}
+                      onMouseEnter={() => setHoverRating(starValue)}
+                      onMouseLeave={() => setHoverRating(0)}
+                      aria-label={`Submit a rating score of ${starValue} stars`}
+                    >
+                      <Star 
+                        size={26} 
+                        fill={isStarred ? "#ffb100" : "none"} 
+                        color={isStarred ? "#ffb100" : "#cbd5cb"} 
+                      />
+                    </button>
+                  );
+                })}
+                {userRating > 0 && <span className="user-score-readout">({userRating} / 5 Logged)</span>}
+              </div>
+            </div>
+          </section>
+
+          <hr className="section-divider" />
+
           {/* HIGHLIGHTS SECTION */}
           <section className="details-section-block">
             <h2 className="section-subtitle-modern">Expedition Highlights</h2>
@@ -300,9 +435,7 @@ const DestinationsDetails = () => {
         </aside>
       </div>
 
-      {/* ==========================================================================
-         5. INTEGRATED SPECIFIC CONTEXTUAL FOOTER BLOCK
-         ========================================================================== */}
+      {/* 5. INTEGRATED SPECIFIC CONTEXTUAL FOOTER BLOCK */}
       <footer className="dest-details-bespoke-footer">
         <div className="footer-pledge-card">
           <div className="pledge-header-row">

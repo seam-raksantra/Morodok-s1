@@ -1,3 +1,6 @@
+/* ==========================================================================
+   MODERN DESTINATION DETAILS STRUCTURAL CORE
+   ========================================================================== */
 .modern-dest-page-wrapper {
   max-width: 1250px;
   margin: 0 auto;
@@ -7,6 +10,7 @@
   background-color: #ffffff;
 }
 
+/* APPLICATION STATUS STATES */
 .dest-details-loader,
 .dest-details-error {
   min-height: 60vh;
@@ -21,7 +25,7 @@
   width: 40px;
   height: 40px;
   border: 3px solid #b7c7b7;
-  border-top-color: #24d349;
+  border-top-color: #ff523b;
   border-radius: 50%;
   animation: destSpin 0.8s linear infinite;
 }
@@ -38,14 +42,22 @@
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.back-home-btn:hover {
+  background-color: #ff523b;
 }
 
 .section-divider {
   border: none;
-  border-top: 1px solid #eaeaea;
+  border-top: 1px solid #eef2ee;
   margin: 35px 0;
 }
 
+/* ==========================================================================
+   TOP UTILITY INTERFACE HEADERS
+   ========================================================================== */
 .dest-action-nav {
   display: flex;
   justify-content: space-between;
@@ -65,7 +77,7 @@
   font-weight: 600;
   color: #2d4a2d;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .nav-circle-btn:hover {
@@ -86,13 +98,14 @@
 .heart-btn.active {
   background: #fff5f5;
   border-color: #ffe3e3;
+  color: #ff4b4b;
 }
 
 .dest-main-header {
   margin-bottom: 30px;
 }
 
-.dest-heros-title {
+.dest-hero-title {
   font-size: 2.8rem;
   font-weight: 800;
   color: #1a301a;
@@ -132,6 +145,9 @@
   color: #7a8a7a;
 }
 
+/* ==========================================================================
+   MOSAIC GRID GEOMETRY CANVAS
+   ========================================================================== */
 .dest-mosaic-gallery {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -161,13 +177,16 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .dest-mosaic-gallery img:hover {
-  transform: scale(1.03);
+  transform: scale(1.02);
 }
 
+/* ==========================================================================
+   PRIMARY TWO-COLUMN INFRASTRUCTURE SPLIT
+   ========================================================================== */
 .dest-split-container {
   display: grid;
   grid-template-columns: 1fr 380px;
@@ -179,7 +198,7 @@
   min-width: 0;
 }
 
-/* Feature Metrics Belt Strip */
+/* FEATURE BELT STRIP */
 .dest-features-strip {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -205,6 +224,7 @@
   align-items: center;
   justify-content: center;
   color: #2d4a2d;
+  flex-shrink: 0;
 }
 
 .pill-content {
@@ -245,6 +265,7 @@
   margin: 0;
 }
 
+/* EXPEDITION HIGHLIGHTS CARDS */
 .highlights-modern-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -266,14 +287,69 @@
 }
 
 .modern-h-card:hover {
-  border-color: #b7c7b7;
+  border-color: #cbd5cb;
 }
 
 .h-check-icon {
-  color: #24d349;
+  color: #ff523b;
   flex-shrink: 0;
 }
 
+/* ==========================================================================
+   DYNAMIC INTERACTIVE AUDIT RATINGS BAR
+   ========================================================================== */
+.interactive-rating-payload-hub {
+  background-color: #fafbfa;
+  border: 1px solid #eef2ee;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.rating-metrics-summary h4 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #121e12;
+  margin: 0 0 4px 0;
+}
+
+.rating-metrics-summary p {
+  font-size: 13.5px;
+  color: #526252;
+  margin: 0;
+}
+
+.rating-star-interactive-rail {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.star-node-action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: transform 0.15s ease;
+}
+
+.star-node-action-btn:hover {
+  transform: scale(1.15);
+}
+
+.user-score-readout {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #2d4a2d;
+  margin-left: 8px;
+}
+
+/* ==========================================================================
+   SUGGESTED ROUTE ROUTING TIMELINE
+   ========================================================================== */
 .itinerary-timeline {
   display: flex;
   flex-direction: column;
@@ -324,7 +400,7 @@
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
-  color: #24d349;
+  color: #ff523b;
   letter-spacing: 0.05em;
   margin-bottom: 2px;
 }
@@ -343,9 +419,12 @@
   margin: 0;
 }
 
+/* ==========================================================================
+   STICKY BLUEPRINT PLANNING SIDEBAR
+   ========================================================================== */
 .dest-sticky-sidebar {
   position: sticky;
-  top: 40px;
+  top: 120px; /* Aligns neatly underneath standard dashboard header offsets */
   z-index: 10;
 }
 
@@ -395,22 +474,21 @@
 
 .planner-action-btn-primary {
   width: 100%;
-  background: #24d349;
-  color: #000000;
+  background: #121e12;
+  color: #ffffff;
   border: none;
   padding: 16px;
   border-radius: 14px;
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 12px rgba(36, 211, 73, 0.2);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .planner-action-btn-primary:hover {
-  background: #1bc23e;
+  background: #ff523b;
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(36, 211, 73, 0.3);
+  box-shadow: 0 8px 24px rgba(255, 82, 59, 0.2);
 }
 
 .planner-action-btn-primary:active {
@@ -425,6 +503,138 @@
   line-height: 1.4;
 }
 
+/* ==========================================================================
+   UNIVERSAL FLOATING SHARE DISPLAY LAYERS
+   ========================================================================== */
+.floating-action-toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #121e12;
+  color: #ffffff;
+  padding: 12px 28px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 2000;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+  animation: slideToastInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  letter-spacing: 0.01em;
+}
+
+@keyframes slideToastInUp {
+  0% { transform: translate(-50%, 20px); opacity: 0; }
+  100% { transform: translate(-50%, 0); opacity: 1; }
+}
+
+.share-modal-blur-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(18, 30, 18, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.share-modal-payload-box {
+  background-color: #ffffff;
+  border-radius: 20px;
+  max-width: 460px;
+  width: 100%;
+  padding: 28px;
+  box-shadow: 0 24px 60px rgba(18, 30, 18, 0.15);
+  animation: triggerModalGrow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes triggerModalGrow {
+  0% { transform: scale(0.95); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.share-modal-payload-box h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #121e12;
+  margin: 0 0 8px 0;
+}
+
+.share-modal-payload-box p {
+  font-size: 14px;
+  color: #526252;
+  margin: 0 0 20px 0;
+}
+
+.share-input-composite-row {
+  display: flex;
+  gap: 8px;
+  background-color: #fafbfa;
+  border: 1px solid #eef2ee;
+  border-radius: 100px;
+  padding: 6px 6px 6px 18px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+
+.share-input-composite-row input {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 13.5px;
+  color: #121e12;
+  flex: 1;
+  width: 100%;
+}
+
+.share-copy-trigger-btn {
+  background-color: #121e12;
+  color: #ffffff;
+  border: none;
+  border-radius: 100px;
+  padding: 8px 16px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+}
+
+.share-copy-trigger-btn:hover {
+  background-color: #ff523b;
+}
+
+.share-close-panel-btn {
+  background: none;
+  border: 1px solid #cbd5cb;
+  border-radius: 100px;
+  width: 100%;
+  padding: 10px 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #526252;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.share-close-panel-btn:hover {
+  background-color: #fafbfa;
+  color: #121e12;
+  border-color: #121e12;
+}
+
+/* ==========================================================================
+   CONTEXTUAL GEOGRAPHIC PROFILE FOOTER CARD
+   ========================================================================== */
 .dest-details-bespoke-footer {
   margin-top: 80px;
   padding-top: 50px;
@@ -485,10 +695,10 @@
 }
 
 .pillar-item .p-icon {
-  color: #24d349;
+  color: #ff523b;
 }
 
-/* Links Matrix Grid Layout */
+/* LINKS MATRIX CONFIGURATION */
 .footer-links-matrix {
   display: grid;
   grid-template-columns: repeat(2, 1fr) 2fr;
@@ -526,7 +736,7 @@
 }
 
 .matrix-link:hover {
-  color: #24d349;
+  color: #ff523b;
 }
 
 .matrix-column-cta {
@@ -577,6 +787,9 @@
   text-align: center;
 }
 
+/* ==========================================================================
+   RESPONSIVE LAYOUT ENGINE FOR TABLETS & PHONE SIZES
+   ========================================================================== */
 @media (max-width: 1024px) {
   .dest-hero-title {
     font-size: 2.3rem;
@@ -643,5 +856,9 @@
 
   .sticky-planner-card {
     padding: 20px;
+  }
+
+  .interactive-rating-payload-hub {
+    padding: 16px;
   }
 }
