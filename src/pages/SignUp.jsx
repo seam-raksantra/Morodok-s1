@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import '../styles/auth/signup.css';
 
 const SIGNUP_IMAGE = '/src/assets/banner/cambodiaMountain.jpg';
-const logoImage = '/src/assets/logo/morodok-logo.png';
+const logoImage = '/src/assets/logo/morodok-logo.jpg';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -91,7 +91,6 @@ const SignUp = () => {
             style={{ cursor: 'pointer' }}
           >
             <img src={logoImage} alt="Morodok Eco Logo" className="logo-image" />
-            Morodok Eco
           </div>
 
           <div className="signup-header">

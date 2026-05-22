@@ -2,7 +2,7 @@ import React from 'react';
 import {
   LayoutDashboard, ShoppingCart, MapPin, Map,
   Users, Key, ChevronDown, MessageSquare,
-  Star, Ticket, LogOut
+  Star, Ticket, LogOut, Layers
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -19,8 +19,7 @@ const Sidebar = ({
   return (
     <aside className="admin-sidebar">
       <div className="sidebar-logo" onClick={() => navigate('/')}>
-        <img src="/src/assets/logo/morodok-logo.png" alt="Logo" />
-        <span>Morodok Eco</span>
+        <img src="/src/assets/logo/morodok-logo.jpg" alt="Logo" />
       </div>
 
       <nav className="admin-nav">
@@ -72,6 +71,14 @@ const Sidebar = ({
               onClick={() => setActiveTab('trips')}
             >
               <Map size={18} /> Destinations Trip
+            </div>
+
+            {/* CONNECTED TOURS DATABASE RENDER TAB */}
+            <div
+              className={`menu-item ${activeTab === 'packages' ? 'active' : ''}`}
+              onClick={() => setActiveTab('packages')}
+            >
+              <Layers size={18} /> Packages
             </div>
           </div>
         )}

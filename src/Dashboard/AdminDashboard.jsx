@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   LayoutDashboard, ShoppingCart, MapPin,
   Users, Eye, DollarSign, Search, X, Trash2, Camera, Edit,
-  ChevronLeft, ChevronRight, Image as ImageIcon,
+  ChevronLeft, ChevronRight, Image as ImageIcon, Layers
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -33,6 +33,7 @@ const AdminDashboard = () => {
   const [bookings, setBookings] = useState([]);
   const [destinations, setDestinations] = useState([]);
   const [trips, setTrips] = useState([]);
+  const [tours, setTours] = useState([]); // Added state for your database tours data
   const [users, setUsers] = useState([]); 
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -53,6 +54,7 @@ const AdminDashboard = () => {
   const [currentPageBookings, setCurrentPageBookings] = useState(1);
   const [currentPageDestinations, setCurrentPageDestinations] = useState(1);
   const [currentPageTrips, setCurrentPageTrips] = useState(1);
+  const [currentPagePackages, setCurrentPagePackages] = useState(1); // Pagination for Tours/Packages
   const itemsPerPage = 5;
 
   // Detail Modal States
@@ -68,7 +70,8 @@ const AdminDashboard = () => {
   const [imagePreview, setImagePreview] = useState(null);
 
   const [formData, setFormData] = useState({
-    name: '', duration: '', difficulty_type: '', location: '', price: '', description: '', num_people: '', destination_type: ''
+    name: '', duration: '', difficulty_type: '', location: '', price: '', description: '', num_people: '', destination_type: '',
+    title: '', base_price: '', duration_category: '', is_eco_friendly: 1 // Match tour fields for modal
   });
 
   const [bookingFormData, setBookingFormData] = useState({
@@ -84,11 +87,12 @@ const AdminDashboard = () => {
         const token = localStorage.getItem('token');
         const headers = { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
 
-        const [statsRes, bookingRes, destRes, tripRes, userRes] = await Promise.all([
+        const [statsRes, bookingRes, destRes, tripRes, tourRes, userRes] = await Promise.all([
           fetch('http://localhost:5000/api/users/admin-stats', { headers }).catch(e => ({ error: true, json: () => ({}) })),
           fetch('http://localhost:5000/api/bookings', { headers }).catch(e => ({ error: true, json: () => [] })), 
           fetch('http://localhost:5000/api/destinations', { headers }).catch(e => ({ error: true, json: () => [] })),
           fetch('http://localhost:5000/api/trips', { headers }).catch(e => ({ error: true, json: () => [] })),
+          fetch('http://localhost:5000/api/tours', { headers }).catch(e => ({ error: true, json: () => [] })), // Fetch tours from database screenshot context
           fetch('http://localhost:5000/api/users/all-users', { headers }).catch(e => ({ error: true, json: () => [] })) 
         ]);
 
@@ -98,12 +102,20 @@ const AdminDashboard = () => {
         const tData = tripRes.ok ? await tripRes.json() : [];
         const uData = userRes.ok ? await userRes.json() : [];
 
+        let tourData = [];
+        if (tourRes.ok) {
+          const parsedTourResponse = await tourRes.json();
+          tourData = parsedTourResponse.data ? parsedTourResponse.data : parsedTourResponse;
+        }
+
+        console.log("Final array assigned to frontend state:", tourData);
+
         const processBookingTimeline = (allBookings, filter) => {
           if (!Array.isArray(allBookings)) return [];
           const counts = {};
           allBookings.forEach(b => {
             const date = new Date(b.booked_at || b.created_at);
-            if (isNaN(date.getTime())) return; // skip if invalid date
+            if (isNaN(date.getTime())) return; 
             let label;
             if (filter === 'Day') label = date.toLocaleTimeString([], { hour: '2-digit' });
             else if (filter === 'Month') label = date.toLocaleString('default', { month: 'short' });
@@ -127,11 +139,12 @@ const AdminDashboard = () => {
           profit: sData?.totals?.profit || 0,
           bookings: sData?.totals?.bookings || 0,
           totalViews: sData?.totals?.totalViews || 0 
-      });
+        });
 
         setBookings(Array.isArray(bData) ? bData : []); 
         setDestinations(Array.isArray(dData) ? dData : []);
         setTrips(Array.isArray(tData) ? tData : []);
+        setTours(Array.isArray(tourData) ? tourData : []); // Will now successfully map your Cambodian tour rows!
         setUsers(Array.isArray(uData) ? uData : []);
       } catch (err) { 
         console.error("Dashboard Load Error:", err); 
@@ -187,7 +200,8 @@ const AdminDashboard = () => {
   const handleEditOpen = (e, item, type) => {
     e.stopPropagation(); 
     setIsEditing(true);
-    setEditId(item.id);
+    setEditId(item.tour_id || item.id);
+    
     if (type === 'booking') {
       setBookingFormData({
         trip_id: item.trip_id,
@@ -200,6 +214,17 @@ const AdminDashboard = () => {
         status: item.status || 'pending'
       });
       setShowBookingModal(true);
+    } else if (type === 'tour') {
+      setFormData({
+        title: item.title,
+        location: item.location_id,
+        duration_category: item.duration_category,
+        base_price: item.base_price,
+        description: item.description,
+        is_eco_friendly: item.is_eco_friendly
+      });
+      setImagePreview(item.image_url ? `http://localhost:5000/${item.image_url}` : null);
+      setShowAddModal(true);
     } else {
       setFormData({
         name: item.name,
@@ -219,7 +244,11 @@ const AdminDashboard = () => {
   const handleAdd = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
-    const endpoint = activeTab === 'destinations' ? 'destinations' : 'trips';
+    
+    let endpoint = 'trips';
+    if (activeTab === 'destinations') endpoint = 'destinations';
+    if (activeTab === 'packages') endpoint = 'tours';
+
     const data = new FormData();
     if (imageFile) data.append('image', imageFile);
     Object.keys(formData).forEach(key => data.append(key, formData[key]));
@@ -296,21 +325,6 @@ const AdminDashboard = () => {
       }
     } catch (err) { console.error(err); }
   };
-  
-  const updateBookingStatus = async (bookingId, newStatus) => {
-    const token = localStorage.getItem('token');
-    try {
-      const res = await fetch(`http://localhost:5000/api/bookings/${bookingId}`, {
-        method: 'PUT',
-        headers: { 
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json' 
-        },
-        body: JSON.stringify({ status: newStatus })
-      });
-      if (res.ok) window.location.reload();
-    } catch (err) { console.error(err); }
-  };
 
   const handleDelete = (e, id, type) => {
     if (e) e.stopPropagation();
@@ -324,6 +338,7 @@ const AdminDashboard = () => {
         const token = localStorage.getItem('token');
         let endpoint = type || activeTab;
         if (endpoint === 'accounts') endpoint = 'users';
+        if (endpoint === 'packages') endpoint = 'tours';
 
         try {
           const res = await fetch(`http://localhost:5000/api/${endpoint}/${id}`, {
@@ -336,6 +351,7 @@ const AdminDashboard = () => {
             if (endpoint === 'bookings') setBookings(prev => prev.filter(item => item.id !== id));
             if (endpoint === 'destinations') setDestinations(prev => prev.filter(item => item.id !== id));
             if (endpoint === 'trips') setTrips(prev => prev.filter(item => item.id !== id));
+            if (endpoint === 'tours') setTours(prev => prev.filter(item => item.tour_id !== id));
             if (endpoint === 'users') setUsers(prev => prev.filter(item => item.id !== id));
 
             setModal({
@@ -346,53 +362,10 @@ const AdminDashboard = () => {
               showConfirm: true,
               onConfirm: () => setModal({ ...modal, open: false })
             });
-          } else {
-            setModal({
-              open: true,
-              title: 'Error',
-              message: data.message || 'Could not delete item',
-              type: 'error',
-              showConfirm: true,
-              onConfirm: () => setModal({ ...modal, open: false })
-            });
           }
-        } catch (err) {
-          console.error(err);
-          setModal({
-            open: true,
-            title: 'Server Error',
-            message: 'Failed to delete record.',
-            type: 'error',
-            showConfirm: true,
-            onConfirm: () => setModal({ ...modal, open: false })
-          });
-        }
+        } catch (err) { console.error(err); }
       }
     });
-  };
-
-  const createPromoCode = async (data) => {
-    try {
-      const res = await fetch('http://localhost:5000/api/promocodes', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!res.ok) {
-        throw new Error('Failed to create promo code');
-      }
-
-      const newPromo = await res.json();
-
-      setPromoCodes(prev => [newPromo, ...prev]);
-    } catch (error) {
-      console.error('Create promo code error:', error);
-      alert('Could not create promo code');
-    }
   };
 
   const handleLogout = () => {
@@ -421,7 +394,7 @@ const AdminDashboard = () => {
                 <td>{item.difficulty_type}</td>
                 <td className="action-cell">
                   <button className="btn-edit-icon" onClick={(e) => handleEditOpen(e, item, 'dest')}><Edit size={18} /></button>
-                  <button className="btn-delete-icon" onClick={(e) => handleDelete(e, item.id)}><Trash2 size={18} /></button>
+                  <button className="btn-delete-icon" onClick={(e) => handleDelete(e, item.id, 'destinations')}><Trash2 size={18} /></button>
                 </td>
               </tr>
             ))}
@@ -447,13 +420,50 @@ const AdminDashboard = () => {
                 <td>{item.location}</td><td>${item.price}</td><td>{item.num_people || item.number_of_people}</td>
                 <td className="action-cell">
                   <button className="btn-edit-icon" onClick={(e) => handleEditOpen(e, item, 'trip')}><Edit size={18} /></button>
-                  <button className="btn-delete-icon" onClick={(e) => handleDelete(e, item.id)}><Trash2 size={18} /></button>
+                  <button className="btn-delete-icon" onClick={(e) => handleDelete(e, item.id, 'trips')}><Trash2 size={18} /></button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
         <PaginationControls current={currentPageTrips} total={data.length} onPageChange={setCurrentPageTrips} />
+      </div>
+    );
+  };
+
+  // NEW DEDICATED TOURS/PACKAGES TABLE COMPONENT
+  const ToursPackageTable = ({ data }) => {
+    const currentData = data.slice((currentPagePackages - 1) * itemsPerPage, currentPagePackages * itemsPerPage);
+    return (
+      <div className="table-responsive">
+        <table className="admin-data-table">
+          <thead>
+            <tr>
+              <th>Tour ID</th>
+              <th>Title</th>
+              <th>Eco Friendly</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentData.map(item => (
+              <tr key={item.tour_id} onClick={() => handleRowClick(item, 'tour')} style={{cursor: 'pointer'}}>
+                <td>#{item.tour_id}</td>
+                <td><span style={{ fontWeight: '600', color: '#1e293b' }}>{item.title}</span></td>
+                <td>
+                  <span className={`status-badge ${item.is_eco_friendly ? 'confirmed' : 'cancelled'}`}>
+                    {item.is_eco_friendly ? 'Yes' : 'No'}
+                  </span>
+                </td>
+                <td className="action-cell">
+                  <button className="btn-edit-icon" onClick={(e) => handleEditOpen(e, item, 'tour')}><Edit size={18} /></button>
+                  <button className="btn-delete-icon" onClick={(e) => handleDelete(e, item.tour_id, 'tours')}><Trash2 size={18} /></button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <PaginationControls current={currentPagePackages} total={data.length} onPageChange={setCurrentPagePackages} />
       </div>
     );
   };
@@ -683,148 +693,58 @@ const AdminDashboard = () => {
             </div>
           )}
 
-          {activeTab === 'messages' && (
-            <Messages
-              messages={messages}
-              onDelete={id => handleDelete(null, id, 'messages')}
-            />
+          {activeTab === 'packages' && (
+            <div className="admin-content-header-area">
+              <div className="breadcrumb">Tour Places &gt; Packages</div>
+              <div className="content-title-row">
+                <h2>Tour Packages</h2>
+                <button className="btn-primary" onClick={() => {setIsEditing(false); setShowAddModal(true);}}>Add New Tour</button>
+              </div>
+              <div className="data-card">
+                <ToursPackageTable data={tours} />
+              </div>
+            </div>
           )}
 
-          {activeTab === 'reviews' && (
-            <Reviews
-              reviews={reviews}
-              onApprove={id => updateReviewStatus(id)}
-              onDelete={id => handleDelete(null, id, 'reviews')}
-            />
-          )}
-
-          {activeTab === 'coupons' && (
-            <PromoCodes
-              promoCodes={promoCodes}
-              onCreate={createPromoCode}
-              onDelete={id => handleDelete(null, id, 'promocodes')}
-            />
-          )}
+          {activeTab === 'messages' && <Messages messages={messages} onDelete={id => handleDelete(null, id, 'messages')} />}
+          {activeTab === 'reviews' && <Reviews reviews={reviews} onDelete={id => handleDelete(null, id, 'reviews')} />}
+          {activeTab === 'coupons' && <PromoCodes promoCodes={promoCodes} onDelete={id => handleDelete(null, id, 'promocodes')} />}
         </div>
       </main>
 
+      {/* Detail Modal Component Layout Context */}
       {showDetailModal && selectedItem && (
         <div className="modal-overlay" onClick={() => setShowDetailModal(false)}>
           <div className="modal-content" onClick={e => e.stopPropagation()} style={{ width: '700px', padding: '0', overflow: 'hidden' }}>
-            
-            <div style={{ 
-              background: detailType === 'booking' ? '#7c7cfc' : '#1e1e26', 
-              padding: '30px', 
-              color: 'white',
-              position: 'relative'
-            }}>
-              <X 
-                className="close-icon" 
-                onClick={() => setShowDetailModal(false)} 
-                style={{ position: 'absolute', top: '20px', right: '20px', color: 'rgba(255,255,255,0.7)' }} 
-              />
-              <p style={{ fontSize: '12px', textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.8, marginBottom: '5px' }}>
-                System Record #{selectedItem.id}
-              </p>
-              <h2 style={{ margin: 0, fontSize: '24px' }}>
-                {detailType === 'booking' ? `Booking: ${selectedItem.full_name}` : selectedItem.name}
-              </h2>
+            <div style={{ background: '#1e1e26', padding: '30px', color: 'white', position: 'relative' }}>
+              <X className="close-icon" onClick={() => setShowDetailModal(false)} style={{ position: 'absolute', top: '20px', right: '20px', color: 'rgba(255,255,255,0.7)' }} />
+              <p style={{ fontSize: '12px', textTransform: 'uppercase', opacity: 0.8 }}>System Record #{selectedItem.tour_id || selectedItem.id}</p>
+              <h2 style={{ margin: 0 }}>{selectedItem.title || selectedItem.name}</h2>
             </div>
-
             <div style={{ padding: '30px' }}>
-              {detailType === 'booking' ? (
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '25px' }}>
-                  <div>
-                    <div style={{ marginBottom: '20px' }}>
-                      <label style={{ display: 'block', fontSize: '11px', fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase', marginBottom: '5px' }}>Customer Email</label>
-                      <span style={{ fontSize: '15px', color: '#1e293b', fontWeight: 500 }}>{selectedItem.email}</span>
-                    </div>
-                    <div style={{ marginBottom: '20px' }}>
-                      <label style={{ display: 'block', fontSize: '11px', fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase', marginBottom: '5px' }}>Contact Phone</label>
-                      <span style={{ fontSize: '15px', color: '#1e293b', fontWeight: 500 }}>{selectedItem.contact_phone}</span>
-                    </div>
-                    <div style={{ marginBottom: '20px' }}>
-                      <label style={{ display: 'block', fontSize: '11px', fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase', marginBottom: '5px' }}>Booking Date</label>
-                      <span style={{ fontSize: '15px', color: '#1e293b', fontWeight: 500 }}>{new Date(selectedItem.booked_at || selectedItem.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
-                    </div>
-                  </div>
-                  <div>
-                    <div style={{ marginBottom: '20px' }}>
-                      <label style={{ display: 'block', fontSize: '11px', fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase', marginBottom: '5px' }}>Total Payment</label>
-                      <span style={{ fontSize: '20px', color: '#10b981', fontWeight: 700 }}>${Number(selectedItem.total_price).toLocaleString()}</span>
-                    </div>
-                    <div style={{ marginBottom: '20px' }}>
-                      <label style={{ display: 'block', fontSize: '11px', fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase', marginBottom: '5px' }}>Status</label>
-                      <span className={`status-badge ${selectedItem.status?.toLowerCase()}`}>{selectedItem.status}</span>
-                    </div>
-                    <div style={{ marginBottom: '20px' }}>
-                      <label style={{ display: 'block', fontSize: '11px', fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase', marginBottom: '5px' }}>Travelers</label>
-                      <span style={{ fontSize: '15px', color: '#1e293b', fontWeight: 500 }}>{selectedItem.num_people} Persons</span>
-                    </div>
-                  </div>
-                  <div style={{ gridColumn: 'span 2', background: '#f8fafc', padding: '15px', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
-                    <label style={{ display: 'block', fontSize: '11px', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', marginBottom: '5px' }}>Special Instructions</label>
-                    <p style={{ margin: 0, fontSize: '14px', color: '#334155', lineHeight: '1.6' }}>{selectedItem.special_requests || 'No special requirements provided by the customer.'}</p>
-                  </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '250px 1fr', gap: '30px' }}>
+                <div>
+                  {selectedItem.image_url || selectedItem.image ? (
+                    <img src={`http://localhost:5000/${selectedItem.image_url || selectedItem.image}`} alt="Preview" style={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: '10px' }} />
+                  ) : <div style={{ width: '100%', height: '200px', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>No Image</div>}
                 </div>
-              ) : (
-                <div style={{ display: 'grid', gridTemplateColumns: '250px 1fr', gap: '30px' }}>
-                  <div style={{ width: '250px' }}>
-                    {selectedItem.image ? (
-                      <img 
-                        src={`http://localhost:5000/${selectedItem.image}`} 
-                        alt="Preview" 
-                        style={{ width: '100%', height: '250px', objectFit: 'cover', borderRadius: '15px', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }} 
-                      />
-                    ) : (
-                      <div style={{ width: '100%', height: '250px', background: '#f1f5f9', borderRadius: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8' }}>No Image</div>
-                    )}
-                  </div>
-                  <div>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '20px' }}>
-                      <div>
-                        <label style={{ display: 'block', fontSize: '10px', fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase' }}>Location</label>
-                        <span style={{ fontWeight: 600 }}>{selectedItem.location}</span>
-                      </div>
-                      <div>
-                        <label style={{ display: 'block', fontSize: '10px', fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase' }}>Duration</label>
-                        <span style={{ fontWeight: 600 }}>{selectedItem.duration}</span>
-                      </div>
-                      <div>
-                        <label style={{ display: 'block', fontSize: '10px', fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase' }}>Difficulty</label>
-                        <span className={`diff-tag ${selectedItem.difficulty_type?.toLowerCase()}`}>{selectedItem.difficulty_type}</span>
-                      </div>
-                      <div>
-                        <label style={{ display: 'block', fontSize: '10px', fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase' }}>{detailType === 'trip' ? 'Price' : 'Type'}</label>
-                        <span style={{ fontWeight: 600, color: detailType === 'trip' ? '#7c7cfc' : 'inherit' }}>
-                          {detailType === 'trip' ? `$${selectedItem.price}` : (selectedItem.destination_type || 'N/A')}
-                        </span>
-                      </div>
-                    </div>
-                    <label style={{ display: 'block', fontSize: '10px', fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase', marginBottom: '5px' }}>Full Description</label>
-                    <div style={{ maxHeight: '120px', overflowY: 'auto', fontSize: '14px', color: '#64748b', lineHeight: '1.6', paddingRight: '10px' }}>
-                      {selectedItem.description}
-                    </div>
-                  </div>
+                <div>
+                  <p><strong>Description:</strong> {selectedItem.description}</p>
+                  <p><strong>Price:</strong> ${selectedItem.base_price || selectedItem.price}</p>
+                  <p><strong>Duration Category:</strong> {selectedItem.duration_category || selectedItem.duration}</p>
                 </div>
-              )}
-            </div>
-
-            <div className="modal-footer" style={{ padding: '20px 30px', background: '#f8fafc' }}>
-              <button className="btn-cancel" style={{ background: '#fff', border: '1px solid #e2e8f0' }} onClick={() => setShowDetailModal(false)}>Close</button>
-              <button className="btn-save" onClick={(e) => { setShowDetailModal(false); handleEditOpen(e, selectedItem, detailType === 'destination' ? 'dest' : detailType); }}>
-                Edit Record
-              </button>
+              </div>
             </div>
           </div>
         </div>
       )}
-      
+
+      {/* Add / Edit Form Modal */}
       {showAddModal && (
         <div className="modal-overlay">
           <div className="modal-content">
             <div className="modal-header">
-              <h3>{isEditing ? 'Edit' : 'Add New'} {activeTab === 'destinations' ? 'Destination' : 'Trip'}</h3>
+              <h3>{isEditing ? 'Edit' : 'Add New'} {activeTab === 'packages' ? 'Tour Package' : activeTab === 'destinations' ? 'Destination' : 'Trip'}</h3>
               <X className="close-icon" onClick={() => setShowAddModal(false)} />
             </div>
             <form onSubmit={handleAdd} className="admin-modal-form">
@@ -835,12 +755,27 @@ const AdminDashboard = () => {
                 <input type="file" ref={fileInputRef} hidden onChange={handleImageChange} accept="image/*" />
               </div>
               <div className="form-grid">
-                <input type="text" value={formData.name} placeholder="Name" required onChange={(e) => setFormData({...formData, name: e.target.value})} />
-                <input type="text" value={formData.duration} placeholder="Duration" required onChange={(e) => setFormData({...formData, duration: e.target.value})} />
-                <input type="text" value={formData.difficulty_type} placeholder="Difficulty Type" required onChange={(e) => setFormData({...formData, difficulty_type: e.target.value})} />
-                <input type="text" value={formData.location} placeholder="Location" required onChange={(e) => setFormData({...formData, location: e.target.value})} />
-                {activeTab === 'destinations' ? <input type="text" value={formData.destination_type} placeholder="Destination Type" required onChange={(e) => setFormData({...formData, destination_type: e.target.value})} /> : <input type="number" value={formData.price} placeholder="Price" required onChange={(e) => setFormData({...formData, price: e.target.value})} />}
-                <input type="number" value={formData.num_people} placeholder="Number of People" required onChange={(e) => setFormData({...formData, num_people: e.target.value})} />
+                {activeTab === 'packages' ? (
+                  <>
+                    <input type="text" value={formData.title} placeholder="Tour Title" required onChange={(e) => setFormData({...formData, title: e.target.value})} />
+                    <input type="number" value={formData.location} placeholder="Location ID" required onChange={(e) => setFormData({...formData, location: e.target.value})} />
+                    <input type="text" value={formData.duration_category} placeholder="Duration (e.g. 2 nights 3 days)" required onChange={(e) => setFormData({...formData, duration_category: e.target.value})} />
+                    <input type="number" value={formData.base_price} placeholder="Base Price" required onChange={(e) => setFormData({...formData, base_price: e.target.value})} />
+                    <select value={formData.is_eco_friendly} style={{gridColumn: 'span 2'}} onChange={(e) => setFormData({...formData, is_eco_friendly: parseInt(e.target.value)})}>
+                      <option value={1}>Eco Friendly (Yes)</option>
+                      <option value={0}>Eco Friendly (No)</option>
+                    </select>
+                  </>
+                ) : (
+                  <>
+                    <input type="text" value={formData.name} placeholder="Name" required onChange={(e) => setFormData({...formData, name: e.target.value})} />
+                    <input type="text" value={formData.duration} placeholder="Duration" required onChange={(e) => setFormData({...formData, duration: e.target.value})} />
+                    <input type="text" value={formData.difficulty_type} placeholder="Difficulty Type" required onChange={(e) => setFormData({...formData, difficulty_type: e.target.value})} />
+                    <input type="text" value={formData.location} placeholder="Location" required onChange={(e) => setFormData({...formData, location: e.target.value})} />
+                    {activeTab === 'destinations' ? <input type="text" value={formData.destination_type} placeholder="Destination Type" required onChange={(e) => setFormData({...formData, destination_type: e.target.value})} /> : <input type="number" value={formData.price} placeholder="Price" required onChange={(e) => setFormData({...formData, price: e.target.value})} />}
+                    <input type="number" value={formData.num_people} placeholder="Number of People" required onChange={(e) => setFormData({...formData, num_people: e.target.value})} />
+                  </>
+                )}
                 <textarea value={formData.description} placeholder="Description" style={{gridColumn: 'span 2'}} onChange={(e) => setFormData({...formData, description: e.target.value})}></textarea>
               </div>
               <div className="modal-footer"><button type="submit" className="btn-primary">Save</button></div>
@@ -849,6 +784,7 @@ const AdminDashboard = () => {
         </div>
       )}
 
+      {/* Booking Form Overlay Modal placeholder setup */}
       {showBookingModal && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -867,30 +803,15 @@ const AdminDashboard = () => {
                 <input type="text" value={bookingFormData.contact_phone} placeholder="Phone Number" required onChange={(e) => setBookingFormData({...bookingFormData, contact_phone: e.target.value})} />
                 <input type="number" value={bookingFormData.num_people} placeholder="Number of Travellers" required min="1" onChange={(e) => setBookingFormData({...bookingFormData, num_people: e.target.value})} />
                 <input type="date" value={bookingFormData.started_date} placeholder="Preferred Start Date" required onChange={(e) => setBookingFormData({...bookingFormData, started_date: e.target.value})} />
-                {isEditing && (
-                  <select value={bookingFormData.status} onChange={(e) => setBookingFormData({...bookingFormData, status: e.target.value})}>
-                    <option value="pending">Pending</option>
-                    <option value="confirmed">Confirmed</option>
-                    <option value="cancelled">Cancelled</option>
-                  </select>
-                )}
                 <textarea value={bookingFormData.special_requests} placeholder="Special Requests" style={{gridColumn: 'span 2'}} onChange={(e) => setBookingFormData({...bookingFormData, special_requests: e.target.value})}></textarea>
               </div>
-              <div className="modal-footer"><button type="submit" className="btn-primary">{isEditing ? 'Update Booking' : 'Create Booking'}</button></div>
+              <div className="modal-footer"><button type="submit" className="btn-primary">Save</button></div>
             </form>
           </div>
         </div>
       )}
 
-      <ModalMessage 
-        open={modal.open}
-        title={modal.title}
-        message={modal.message}
-        type={modal.type}
-        onClose={() => setModal({ ...modal, open: false })}
-        onConfirm={modal.onConfirm}
-      />
-
+      <ModalMessage open={modal.open} title={modal.title} message={modal.message} type={modal.type} onClose={() => setModal({ ...modal, open: false })} onConfirm={modal.onConfirm} />
     </div>
   );
 };

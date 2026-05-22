@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import '../styles/auth/login.css';
 
 const LOGIN_IMAGE = '/src/assets/banner/angkorWat.jpg';
-const logoImage = '/src/assets/logo/morodok-logo.png';
+const logoImage = '/src/assets/logo/morodok-logo.jpg';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -74,7 +74,6 @@ const Login = () => {
             style={{ cursor: 'pointer' }}
           >
             <img src={logoImage} alt="Morodok Eco Logo" className="logo-image" />
-            Morodok Eco
           </div>
 
           <div className="login-title-box">
