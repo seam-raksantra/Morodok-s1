@@ -1,0 +1,246 @@
+/* Container holding everything in the bottom-right corner */
+.floating-container {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  z-index: 2147483647 !important; /* Maximum layout prioritization stack layer */
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+  gap: 12px !important;
+  pointer-events: none !important; /* Click-through safety allocation layout */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+/* Common layout for both action buttons */
+.floating-btn {
+  pointer-events: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 56px !important;
+  height: 56px !important;
+  border-radius: 50% !important;
+  color: #ffffff !important;
+  border: none !important;
+  cursor: pointer !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease !important;
+}
+
+.floating-btn:hover {
+  transform: scale(1.1) !important;
+}
+
+.floating-btn:active {
+  transform: scale(0.95) !important;
+}
+
+/* AI Button Color Configs */
+.ai-btn-active {
+  background-color: #1f2937 !important;
+}
+.ai-btn-gradient {
+  background: linear-gradient(135deg, #10b981, #0d9488) !important;
+}
+
+/* Telegram Link Button Layout */
+.telegram-btn {
+  background: linear-gradient(135deg, #38bdf8, #3b82f6) !important;
+  text-decoration: none !important;
+}
+
+/* =========================================================================
+   THE SLIDING AI CHAT WINDOW BOX
+   ========================================================================= */
+.ai-chat-window {
+  pointer-events: auto !important;
+  margin-bottom: 8px !important;
+  width: 380px !important;
+  height: 480px !important;
+  background-color: #ffffff !important;
+  border-radius: 16px !important;
+  border: 1px solid #f3f4f6 !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  animation: barSlideIn 0.25s ease-out !important;
+}
+
+@keyframes barSlideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Mobile Viewport Scaling */
+@media (max-width: 640px) {
+  .ai-chat-window {
+    width: 310px !important;
+    height: 440px !important;
+  }
+}
+
+/* Chat window Header */
+.chat-header {
+  background: linear-gradient(to right, #059669, #0f766e) !important;
+  color: #ffffff !important;
+  padding: 12px 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.header-info-block {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+.header-icon-badge {
+  padding: 6px !important;
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border-radius: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.header-text h3 {
+  margin: 0 !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #ffffff !important;
+  letter-spacing: 0.5px !important;
+}
+
+.header-text p {
+  margin: 2px 0 0 0 !important;
+  font-size: 10px !important;
+  color: #a7f3d0 !important;
+}
+
+.close-header-btn {
+  background: none !important;
+  border: none !important;
+  color: #ffffff !important;
+  cursor: pointer !important;
+  padding: 4px !important;
+  display: flex !important;
+  align-items: center !important;
+  border-radius: 50% !important;
+}
+
+.close-header-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Message Content Scroll Window */
+.chat-messages {
+  flex: 1 !important;
+  padding: 16px !important;
+  overflow-y: auto !important;
+  background-color: #f9fafb !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+}
+
+.msg-row {
+  display: flex !important;
+  width: 100% !important;
+}
+.msg-row.user { justify-content: flex-end !important; }
+.msg-row.ai { justify-content: flex-start !important; }
+
+.msg-bubble {
+  max-width: 78% !important;
+  padding: 10px 14px !important;
+  border-radius: 16px !important;
+  font-size: 14px !important;
+  line-height: 1.45 !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+.msg-row.user .msg-bubble {
+  background-color: #059669 !important;
+  color: #ffffff !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.msg-row.ai .msg-bubble {
+  background-color: #ffffff !important;
+  color: #1f2937 !important;
+  border: 1px solid #e5e7eb !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+/* Typing Indicator Animation Structure */
+.typing-dots {
+  display: flex !important;
+  gap: 4px !important;
+  align-items: center !important;
+  padding: 4px 6px !important;
+}
+
+.dot {
+  width: 6px !important;
+  height: 6px !important;
+  background-color: #10b981 !important;
+  border-radius: 50% !important;
+  animation: dotsBounce 1.4s infinite ease-in-out both !important;
+}
+.dot:nth-child(1) { animation-delay: -0.32s !important; }
+.dot:nth-child(2) { animation-delay: -0.16s !important; }
+
+@keyframes dotsBounce {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1.0); }
+}
+
+/* Bottom Action Form Control Panel */
+.chat-footer {
+  padding: 12px !important;
+  background-color: #ffffff !important;
+  border-top: 1px solid #f3f4f6 !important;
+  display: flex !important;
+  gap: 8px !important;
+}
+
+.chat-input {
+  flex: 1 !important;
+  background-color: #f9fafb !important;
+  color: #1f2937 !important;
+  font-size: 14px !important;
+  padding: 10px 14px !important;
+  border-radius: 12px !important;
+  border: 1px solid #e5e7eb !important;
+  outline: none !important;
+}
+
+.chat-input:focus {
+  border-color: #059669 !important;
+  background-color: #ffffff !important;
+}
+
+.send-btn {
+  width: 40px !important;
+  height: 40px !important;
+  background-color: #059669 !important;
+  color: #ffffff !important;
+  border-radius: 12px !important;
+  border: none !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.send-btn:hover {
+  background-color: #047857 !important;
+}

@@ -1,6 +1,6 @@
+import 'dotenv/config';
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 import path from "path"; // Added to handle static directory resolution
 
 import userRoutes from "./routes/userRoutes.js";
@@ -12,8 +12,7 @@ import bookingRoutes from './routes/bookingRoutes.js';
 import packagesRoute from './routes/packagesRoute.js';
 import tourRoutes from './routes/tourRoutes.js';
 import reviewRoutes from './routes/reviewRoutes.js';
-
-dotenv.config();
+import { initTelegramPolling } from './src/services/telegramPolling.js';
 
 const app = express();
 
@@ -35,5 +34,11 @@ app.use('/api/tours', tourRoutes);
 app.use('/api/reviews', reviewRoutes);
 
 app.listen(5000, () => {
-  console.log("Server running on http://localhost:5000");
+  console.log("=================================================");
+  console.log("🚀 Server running smoothly on http://localhost:5000");
+  console.log(`🎯 Telegram Bot Subsystem Target ID: ${process.env.TELEGRAM_ALLOWED_CHAT_ID || "364860328"}`);
+  console.log("=================================================");
+
+  // Trigger the asynchronous long-polling background monitor thread
+  initTelegramPolling();
 });

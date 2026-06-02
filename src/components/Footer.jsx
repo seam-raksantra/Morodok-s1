@@ -49,7 +49,7 @@ const Footer = () => {
 
       <div className="footer-base-grid">
         <div className="base-grid-column brand-bio-summary">
-          <h3 className="brand-logo-text">Morodok <span>Eco</span></h3>
+          <h3 className="brand-logo-text">Explo<span>rime</span></h3>
           <p className="brand-paragraph">
             Your one-stop sustainable travel ecosystem hub. Discover undocumented locations, book low-impact routes, and leave a lasting green legacy. Straight to your travel journal.
           </p>

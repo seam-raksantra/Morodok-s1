@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import '../styles/auth/login.css';
 
 const LOGIN_IMAGE = '/src/assets/banner/angkorWat.jpg';
-const logoImage = '/src/assets/logo/morodok-logo.jpg';
+const logoImage = '/src/assets/logo/logo.jpg';
 
 const Login = () => {
   const navigate = useNavigate();

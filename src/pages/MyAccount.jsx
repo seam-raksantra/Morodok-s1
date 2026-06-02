@@ -209,7 +209,7 @@ const MyAccount = () => {
                 <div className="profile-header">
                   <input type="file" ref={fileInputRef} style={{ display: 'none' }} accept="image/*" onChange={handleFileChange} />
                   <div className="avatar-wrapper" onClick={handleImageClick}>
-                    <div className="avatar-placeholder">
+                    <div className="avatar-placeholders">
                       {imagePreview ? <img src={imagePreview} alt="Profile" className="profile-img-preview" /> : <div className="empty-avatar-init">{user.name ? user.name.charAt(0).toUpperCase() : 'U'}</div>}
                     </div>
                     <button className="camera-btn" type="button"><Camera size={16} /></button>

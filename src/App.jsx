@@ -20,6 +20,8 @@ import BookingSuccess from './Payment/BookingSuccess';
 import Packages from './pages/Packages';
 import PackageDetails from './pages/PackageDetails';
 
+import FloatingActionBar from './pages/FloatingActionBar';
+
 const AdminRoute = ({ children }) => {
   const userData = localStorage.getItem('user');
   const user = userData ? JSON.parse(userData) : null;
@@ -34,6 +36,7 @@ const AdminRoute = ({ children }) => {
 function App() {
   return (
     <Router>
+      <FloatingActionBar />
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/destinations" element={<Destinations />} />

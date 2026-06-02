@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import '../styles/auth/signup.css';
 
 const SIGNUP_IMAGE = '/src/assets/banner/cambodiaMountain.jpg';
-const logoImage = '/src/assets/logo/morodok-logo.jpg';
+const logoImage = '/src/assets/logo/logo.jpg';
 
 const SignUp = () => {
   const navigate = useNavigate();

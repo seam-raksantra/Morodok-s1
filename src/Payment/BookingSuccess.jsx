@@ -7,7 +7,7 @@ import Header from '../components/Navbar';
 import Footer from '../components/Footer';
 import '../styles/payment/success.css';
 
-import logoImage from '../assets/logo/morodok-logo.png';
+import logoImage from '../assets/logo/logo.jpg';
 
 const BookingSuccess = () => {
   const location = useLocation();
@@ -29,7 +29,7 @@ const BookingSuccess = () => {
       doc.rect(0, 0, 210, 40, 'F');
 
       try {
-        doc.addImage(logoImage, 'PNG', 15, 8, 22, 22); 
+        doc.addImage(logoImage, 'JPG', 15, 8, 22, 22); 
       } catch (e) {
         console.error("Logo could not be added to PDF:", e);
       }
@@ -37,7 +37,7 @@ const BookingSuccess = () => {
       // --- BRANDING TEXT ---
       doc.setFontSize(22);
       doc.setTextColor(255, 255, 255);
-      doc.text("Morodok Eco", 42, 25);
+      doc.text("Explorime", 42, 25);
       doc.setFontSize(10);
       doc.text("Official Booking Receipt", 42, 32);
 
@@ -80,11 +80,11 @@ const BookingSuccess = () => {
       doc.setFontSize(9);
       doc.setFont(undefined, 'italic');
       doc.setTextColor(150);
-      doc.text("Thank you for choosing Morodok Eco. Please keep this for your records.", 105, 275, { align: 'center' });
-      doc.text("For support, contact support@morodokeco.com", 105, 282, { align: 'center' });
+      doc.text("Thank you for choosing Explorime. Please keep this for your records.", 105, 275, { align: 'center' });
+      doc.text("For support, contact support@explorime.com", 105, 282, { align: 'center' });
 
       // Trigger Download
-      doc.save(`Receipt_MorodokEco_${bookingId}.pdf`);
+      doc.save(`Receipt_Explorime_${bookingId}.pdf`);
     } catch (error) {
       console.error("PDF Generation Error:", error);
       alert("Error generating receipt.");

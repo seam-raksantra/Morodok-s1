@@ -803,6 +803,13 @@ const AdminDashboard = () => {
                 <input type="text" value={bookingFormData.contact_phone} placeholder="Phone Number" required onChange={(e) => setBookingFormData({...bookingFormData, contact_phone: e.target.value})} />
                 <input type="number" value={bookingFormData.num_people} placeholder="Number of Travellers" required min="1" onChange={(e) => setBookingFormData({...bookingFormData, num_people: e.target.value})} />
                 <input type="date" value={bookingFormData.started_date} placeholder="Preferred Start Date" required onChange={(e) => setBookingFormData({...bookingFormData, started_date: e.target.value})} />
+                <select value={bookingFormData.status} onChange={(e) => setBookingFormData({...bookingFormData, status: e.target.value})} style={{padding: '10px', borderRadius: '6px'}}>
+                  <option value="pending">Pending</option>
+                  <option value="confirmed">Confirmed</option>
+                  <option value="paid">Paid</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+
                 <textarea value={bookingFormData.special_requests} placeholder="Special Requests" style={{gridColumn: 'span 2'}} onChange={(e) => setBookingFormData({...bookingFormData, special_requests: e.target.value})}></textarea>
               </div>
               <div className="modal-footer"><button type="submit" className="btn-primary">Save</button></div>

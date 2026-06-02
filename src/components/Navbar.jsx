@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ChevronDown, Menu, X, User, MapPin } from 'lucide-react';
 import '../styles/navbar.css';
-import logoImage from '../assets/logo/morodok-logo.jpg';
+import logoImage from '../assets/logo/logo.jpg';
 
 const provincesList = [
   "Phnom Penh", "Siem Reap", "Preah Sihanouk", "Kampot", "Kep", 

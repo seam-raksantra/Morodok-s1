@@ -19,7 +19,7 @@ const Sidebar = ({
   return (
     <aside className="admin-sidebar">
       <div className="sidebar-logo" onClick={() => navigate('/')}>
-        <img src="/src/assets/logo/morodok-logo.jpg" alt="Logo" />
+        <img src="/src/assets/logo/logo.jpg" alt="Logo" />
       </div>
 
       <nav className="admin-nav">
